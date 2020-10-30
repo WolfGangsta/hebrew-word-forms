@@ -1,0 +1,276 @@
+{
+    " ": {
+        "name": "space",
+        "type": "punctuation",
+        "transliteration": " "
+    },
+    "׃": {
+        "name": "pasuq",
+        "type": "punctuation",
+        "transliteration": "."
+    },
+    "א": {
+        "name": "alef",
+        "type": "consonant",
+        "isGuttural": true,
+        "transliteration": "'"
+    },
+    "ב": {
+        "name": "bet",
+        "type": "consonant",
+        "isBegadkefat": true,
+        "transliteration": [
+            "v", "b"
+        ]
+    },
+    "ג": {
+        "name": "gimel",
+        "type": "consonant",
+        "isBegadkefat": true,
+        "transliteration": "g"
+    },
+    "ד": {
+        "name": "dalet",
+        "type": "consonant",
+        "isBegadkefat": true,
+        "transliteration": "d"
+    },
+    "ה": {
+        "name": "hey",
+        "type": "consonant",
+        "isGuttural": true,
+        "transliteration": "h"
+    },
+    "ו": {
+        "name": "vav",
+        "type": "consonant",
+        "transliteration": "v"
+    },
+    "ז": {
+        "name": "zayin",
+        "type": "consonant",
+        "transliteration": "z"
+    },
+    "ח": {
+        "name": "chet",
+        "type": "consonant",
+        "isGuttural": true,
+        "transliteration": "ch"
+    },
+    "ט": {
+        "name": "tet",
+        "type": "consonant",
+        "transliteration": "t"
+    },
+    "י": {
+        "name": "yod",
+        "type": "consonant",
+        "transliteration": "y"
+    },
+    "כ": {
+        "name": "kaf",
+        "type": "consonant",
+        "isBegadkefat": true,
+        "final": "ך",
+        "transliteration": [
+            "kh", "k"
+        ]
+    },
+    "ך": {
+        "isFinal": true,
+        "regular": "כ"
+    },
+    "ל": {
+        "name": "lamed",
+        "type": "consonant",
+        "transliteration": "l"
+    },
+    "מ": {
+        "name": "mem",
+        "type": "consonant",
+        "final": "ם",
+        "transliteration": "m"
+    },
+    "ם": {
+        "isFinal": true,
+        "regular": "מ"
+    },
+    "נ": {
+        "name": "nun",
+        "type": "consonant",
+        "final": "ן",
+        "transliteration": "n"
+    },
+    "ן": {
+        "isFinal": true,
+        "regular": "נ"
+    },
+    "ס": {
+        "name": "samech",
+        "type": "consonant",
+        "transliteration": "s"
+    },
+    "ע": {
+        "name": "ayin",
+        "type": "consonant",
+        "isGuttural": true,
+        "transliteration": "*"
+    },
+    "פ": {
+        "name": "pey",
+        "type": "consonant",
+        "final": "ף",
+        "isBegadkefat": true,
+        "transliteration": [
+            "f", "p"
+        ]
+    },
+    "ף": {
+        "isFinal": true,
+        "regular": "פ"
+    },
+    "צ": {
+        "name": "tsade",
+        "type": "consonant",
+        "final": "ץ",
+        "transliteration": "ts"
+    },
+    "ץ": {
+        "isFinal": true,
+        "regular": "צ"
+    },
+    "ק": {
+        "name": "qof",
+        "type": "consonant",
+        "transliteration": "k"
+    },
+    "ר": {
+        "name": "resh",
+        "type": "consonant",
+        "transliteration": "r"
+    },
+    "שׂ": {
+        "name": "sin",
+        "type": "consonant",
+        "transliteration": "s"
+    },
+    "שׁ": {
+        "name": "shin",
+        "type": "consonant",
+        "transliteration": "sh"
+    },
+    "ת": {
+        "name": "tav",
+        "type": "consonant",
+        "isBegadkefat": true,
+        "transliteration": "t"
+    },
+    "ּ": {
+        "name": "dagesh",
+        "type": "dagesh",
+        "transliteration": "_"
+    },
+    "ְ": {
+        "name": "sheva",
+        "type": "vowel",
+        "length": 0,
+        "transliteration": "'"
+    },
+    "ֱ": {
+        "name": "chatef-segol",
+        "type": "vowel",
+        "class": "i",
+        "length": 0,
+        "transliteration": "e"
+    },
+    "ֲ": {
+        "name": "chatef-patach",
+        "type": "vowel",
+        "class": "a",
+        "length": 0,
+        "transliteration": "a"
+    },
+    "ֳ": {
+        "name": "chatef-qamets",
+        "type": "vowel",
+        "class": "u",
+        "length": 0,
+        "transliteration": "o"
+    },
+    "ִ": {
+        "name": "chireq",
+        "type": "vowel",
+        "class": "i",
+        "length": 1,
+        "transliteration": "i"
+    },
+    "ֵ": {
+        "name": "tsere",
+        "type": "vowel",
+        "class": "i",
+        "length": 2,
+        "transliteration": "e"
+    },
+    "ֶ": {
+        "name": "segol",
+        "type": "vowel",
+        "class": "i",
+        "length": 1,
+        "transliteration": "e"
+    },
+    "ַ": {
+        "name": "patach",
+        "type": "vowel",
+        "class": "a",
+        "length": 1,
+        "transliteration": "a"
+    },
+    "ָ": {
+        "name": "qamets",
+        "type": "vowel",
+        "class": "a",
+        "length": 2,
+        "transliteration": "a"
+    },
+    "ֹ": {
+        "name": "cholem",
+        "type": "vowel",
+        "class": "u",
+        "length": 2,
+        "transliteration": "o"
+    },
+    "ֻ": {
+        "name": "qibbuts",
+        "type": "vowel",
+        "class": "u",
+        "length": 1,
+        "transliteration": "u"
+    },
+    "ׇ": {
+        "name": "qamets-chatuf",
+        "type": "vowel",
+        "class": "u",
+        "length": 1,
+        "transliteration": "o"
+    },
+    "ִי": {
+        "name": "chireq-yod",
+        "type": "vowel",
+        "class": "i",
+        "length": 3,
+        "transliteration": "i"
+    },
+    "וֹ": {
+        "name": "cholem-vav",
+        "type": "vowel",
+        "class": "a",
+        "length": "3",
+        "transliteration": "o"
+    },
+    "וּ": {
+        "name": "shureq",
+        "type": "vowel",
+        "class": "u",
+        "transliteration": "u"
+    }
+}

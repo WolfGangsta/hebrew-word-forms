@@ -1,0 +1,72 @@
+[
+    {
+        "lesson": 2,
+        "root": "אכל",
+        "translations": [
+            ["eat", "ate"]
+        ]
+    },
+    {
+        "lesson": 2,
+        "root": "זכר",
+        "translations": [
+            "remember"
+        ]
+    },
+    {
+        "lesson": 2,
+        "root": "כבד",
+        "stative": true,
+        "translations": [
+            "heavy"
+        ]
+    },
+    {
+        "lesson": 2,
+        "root": "שׁלח",
+        "translations": [
+            ["send", "sent"]
+        ]
+    },
+    {
+        "lesson": 5,
+        "root": "הלכ",
+        "translations": [
+            "walk", ["go", "went"]
+        ]
+    },
+    {
+        "lesson": 5,
+        "root": "לקח",
+        "translations": [
+            ["take", "took"], "seize"
+        ]
+    },
+    {
+        "lesson": 5,
+        "root": "נתנ",
+        "translations": [
+            ["give", "gave"], "present"
+        ]
+    },
+    {
+        "lesson": 5,
+        "root": "שׁמע",
+        "translations": [
+            ["hear", "heard"]
+        ]
+    },
+    {
+        "lesson": 6,
+        "root": "בטח",
+        "translations": [
+            "trust"
+        ]
+    },
+    {
+        "root": "ברא",
+        "translations": [
+            "create", "fashion"
+        ]
+    }
+]
