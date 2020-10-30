@@ -3,16 +3,6 @@ let focusedWord = document.createElement("p");
 focusedWord.style = "font-size: 36px";
 let transliteration = document.createElement("p");
 
-let vocabulary;
-let request = new XMLHttpRequest();
-request.open("GET", "vocabulary.json");
-request.responseType = "json";
-request.send();
-request.onload = function() {
-    vocabulary = request.response;
-    main();
-};
-
 function showRandomWord() {
     let n = Math.floor(Math.random() * vocabulary.length);
     let vocabEntry = vocabulary[n];
@@ -28,9 +18,6 @@ function beginLesson() {
 }
 
 function main() {
-    // TODO: Use async functions correctly
-    while (letterInfo == undefined) {}
-
     let beginButton = document.getElementById("begin");
     beginButton.addEventListener("click", beginLesson);
     
@@ -48,3 +35,5 @@ function main() {
     translitP.innerText = transliterate(genesis);
     document.body.append(translitP);
 }
+
+Promise.all(promises).then(main);

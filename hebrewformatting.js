@@ -20,13 +20,25 @@ const
 // TODO: Catalog the rest of the verb root vocabulary
 
 let letterInfo;
-let lettersRequest = new XMLHttpRequest();
-lettersRequest.open("GET", "letters.json");
-lettersRequest.responseType = "json";
-lettersRequest.send();
-lettersRequest.onload = function() {
-    letterInfo = lettersRequest.response;
-};
+let vocabulary;
+let promises = [
+    new Promise(resolve => {
+        fetch("letters.json")
+        .then(response => response.json())
+        .then(json => {
+            letterInfo = json;
+            resolve();
+        });
+    }),
+    new Promise(resolve => {
+        fetch("vocabulary.json")
+        .then(response => response.json())
+        .then(json => {
+            vocabulary = json;
+            resolve();
+        });
+    })
+];
 
 // Change the final consonant of a Hebrew word
 // to its final form, if applicable.
