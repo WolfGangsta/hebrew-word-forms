@@ -64,6 +64,116 @@
         ]
     },
     {
+        "lesson": 6,
+        "root": "כתב",
+        "translations": [
+            ["write", "wrote"]
+        ]
+    },
+    {
+        "lesson": 6,
+        "root": "שׁמר",
+        "translations": [
+            "guard",
+            "observe",
+            "watch"
+        ]
+    },
+    {
+        "lesson": 6,
+        "root": "שׁפט",
+        "translations": [
+            "judge",
+            "decide",
+            "punish"
+        ]
+    },
+    {
+        "lesson": 7,
+        "root": "דרשׁ",
+        "translations": [
+            ["seek", "sought"],
+            "inquire"
+        ]
+    },
+    {
+        "lesson": 7,
+        "root": "זבח",
+        "translations": [
+            "sacrifice",
+            "slaughter"
+        ]
+    },
+    {
+        "lesson": 7,
+        "root": "ידע",
+        "translations": [
+            ["know", "knew"],
+            ["care about", "cared about"]
+        ]
+    },
+    {
+        "lesson": 7,
+        "root": "ישׁב",
+        "translations": [
+            ["sit", "sat"],
+            ["dwell", "dwelt"],
+            "inhabit"
+        ]
+    },
+    {
+        "lesson": 10,
+        "root": "כרת",
+        "translations": [
+            ["cut", "cut"]
+        ]
+    },
+    {
+        "lesson": 10,
+        "root": "מלכ",
+        "translations": [
+            "rule",
+            [["is king", "are king"], "was king"]
+        ]
+    },
+    {
+        "lesson": 10,
+        "root": "שׁכב",
+        "translations": [
+            [["lie down", "lies down"], "lay down"]
+        ]
+    },
+    {
+        "lesson": 11,
+        "root": "אמר",
+        "translations": [
+            [["say", "says"], "said"]
+        ]
+    },
+    {
+        "lesson": 11,
+        "root": "עבר",
+        "translations": [
+            [["go across", "goes across"], "went across"],
+            "transgress"
+        ]
+    },
+    {
+        "lesson": 11,
+        "root": "עמד",
+        "translations": [
+            ["stand", "stood"]
+        ]
+    },
+    {
+        "lesson": 11,
+        "root": "פקד",
+        "translations": [
+            "visit",
+            [["take care of", "takes care of"], "took care of"]
+        ]
+    },
+    {
         "root": "ברא",
         "translations": [
             "create", "fashion"
