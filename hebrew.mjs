@@ -8,9 +8,11 @@ export default class Hebrew {
         this.vocabulary = vocabulary;
         this.letters = new Letters(letterInfo);
     }
+
     // Change the final consonant of a Hebrew word
-    // to its final form, if applicable.
-    finalLetterForm(word) {
+    // to its final form (if applicable) and
+    // TODO: fold repeated letters into one with a dagesh
+    finalize(word) {
         let letts = this.lettersOf(word);
         for (let i = letts.length - 1; i >= 0; i--) {
             let letter = letts[i];
@@ -29,6 +31,8 @@ export default class Hebrew {
         return word;
     }
 
+    // Transliterate a word, changing each letter
+    // to its appropriate Latin-alphabet analog
     transliterate(word) {
         let letts = this.lettersOf(word);
         let translit = "";
@@ -50,9 +54,10 @@ export default class Hebrew {
         return translit;
     }
 
-    translate(word, past, singular) {
+    // Translate a root to its English meaning(s)
+    translate(root, past, singular) {
         // TODO: Use all translations, not just the first one
-        let entry = this.vocabulary[word].translations[0];
+        let entry = this.vocabulary[root].translations[0];
         if (past) {
             if (typeof entry == "string") {
                 if (entry.slice(-1) == "e") {
@@ -94,12 +99,13 @@ export default class Hebrew {
         }
     }
 
-    // Return the theme vowel of a root.
+    // Return the theme vowel of a root
     themeVowel(root) {
         // TODO: change to patach when appropriate
         return CHOLEM;
     }
 
+    // Split a word into a list of letters
     lettersOf(word) {
         let letts = [];
         for (let i = 0; i < word.length; i++) {

@@ -29,11 +29,15 @@ focusedWord.style = "font-size: 36px";
 let transliteration = document.createElement("p");
 
 function showRandomWord() {
-    let n = Math.floor(Math.random() * vocabulary.length);
-    let vocabEntry = vocabulary[n];
-    let rootForm = hebrew.finalLetterForm(vocabEntry.root);
-    focusedWord.innerHTML = rootForm;
-    transliteration.innerHTML = hebrew.transliterate(rootForm);
+    let wordList = Object.keys(vocabulary);
+    let n = Math.floor(Math.random() * wordList.length);
+    let root = wordList[n];
+
+    let finalRoot = hebrew.finalize(root);
+    let translit = hebrew.transliterate(root);
+
+    focusedWord.innerHTML = finalRoot;
+    transliteration.innerHTML = translit;
 }
 
 function beginLesson() {

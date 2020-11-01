@@ -1,182 +1,158 @@
-[
-    {
+{
+    "אכל": {
         "lesson": 2,
-        "root": "אכל",
         "translations": [
             ["eat", "ate"]
         ]
     },
-    {
+    "זכר": {
         "lesson": 2,
-        "root": "זכר",
         "translations": [
             "remember"
         ]
     },
-    {
+    "כבד": {
         "lesson": 2,
-        "root": "כבד",
         "stative": true,
         "translations": [
             "heavy"
         ]
     },
-    {
+    "שׁלח": {
         "lesson": 2,
-        "root": "שׁלח",
         "translations": [
             ["send", "sent"]
         ]
     },
-    {
+    "הלכ": {
         "lesson": 5,
-        "root": "הלכ",
         "translations": [
             "walk", ["go", "went"]
         ]
     },
-    {
+    "לקח": {
         "lesson": 5,
-        "root": "לקח",
         "translations": [
             ["take", "took"], "seize"
         ]
     },
-    {
+    "נתנ": {
         "lesson": 5,
-        "root": "נתנ",
         "translations": [
             ["give", "gave"], "present"
         ]
     },
-    {
+    "שׁמע": {
         "lesson": 5,
-        "root": "שׁמע",
         "translations": [
             ["hear", "heard"]
         ]
     },
-    {
+    "בטח": {
         "lesson": 6,
-        "root": "בטח",
         "translations": [
             "trust"
         ]
     },
-    {
+    "כתב": {
         "lesson": 6,
-        "root": "כתב",
         "translations": [
             ["write", "wrote"]
         ]
     },
-    {
+    "שׁמר": {
         "lesson": 6,
-        "root": "שׁמר",
         "translations": [
             "guard",
             "observe",
             "watch"
         ]
     },
-    {
+    "שׁפט": {
         "lesson": 6,
-        "root": "שׁפט",
         "translations": [
             "judge",
             "decide",
             "punish"
         ]
     },
-    {
+    "דרשׁ": {
         "lesson": 7,
-        "root": "דרשׁ",
         "translations": [
             ["seek", "sought"],
             "inquire"
         ]
     },
-    {
+    "זבח": {
         "lesson": 7,
-        "root": "זבח",
         "translations": [
             "sacrifice",
             "slaughter"
         ]
     },
-    {
+    "ידע": {
         "lesson": 7,
-        "root": "ידע",
         "translations": [
             ["know", "knew"],
             ["care about", "cared about"]
         ]
     },
-    {
+    "ישׁב": {
         "lesson": 7,
-        "root": "ישׁב",
         "translations": [
             ["sit", "sat"],
             ["dwell", "dwelt"],
             "inhabit"
         ]
     },
-    {
+    "כרת": {
         "lesson": 10,
-        "root": "כרת",
         "translations": [
             ["cut", "cut"]
         ]
     },
-    {
+    "מלכ": {
         "lesson": 10,
-        "root": "מלכ",
         "translations": [
             "rule",
             [["is king", "are king"], "was king"]
         ]
     },
-    {
+    "שׁכב": {
         "lesson": 10,
-        "root": "שׁכב",
         "translations": [
             [["lie down", "lies down"], "lay down"]
         ]
     },
-    {
+    "אמר": {
         "lesson": 11,
-        "root": "אמר",
         "translations": [
             [["say", "says"], "said"]
         ]
     },
-    {
+    "עבר": {
         "lesson": 11,
-        "root": "עבר",
         "translations": [
             [["go across", "goes across"], "went across"],
             "transgress"
         ]
     },
-    {
+    "עמד": {
         "lesson": 11,
-        "root": "עמד",
         "translations": [
             ["stand", "stood"]
         ]
     },
-    {
+    "פקד": {
         "lesson": 11,
-        "root": "פקד",
         "translations": [
             "visit",
             [["take care of", "takes care of"], "took care of"]
         ]
     },
-    {
-        "root": "ברא",
+    "ברא": {
         "translations": [
             "create", "fashion"
         ]
     }
-]
+}
