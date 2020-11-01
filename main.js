@@ -27,6 +27,7 @@ let lesson = document.getElementById("lesson");
 let focusedWord = document.createElement("p");
 focusedWord.style = "font-size: 36px";
 let transliteration = document.createElement("p");
+let translation = document.createElement("p");
 
 function showRandomWord() {
     let wordList = Object.keys(vocabulary);
@@ -35,14 +36,17 @@ function showRandomWord() {
 
     let finalRoot = hebrew.finalize(root);
     let translit = hebrew.transliterate(root);
+    let transl = hebrew.translate(root);
 
     focusedWord.innerHTML = finalRoot;
     transliteration.innerHTML = translit;
+    translation.innerHTML = transl;
 }
 
 function beginLesson() {
     lesson.appendChild(focusedWord);
     lesson.appendChild(transliteration);
+    lesson.appendChild(translation);
     showRandomWord();
 }
 
