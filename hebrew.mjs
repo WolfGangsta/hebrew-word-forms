@@ -57,7 +57,16 @@ export default class Hebrew {
     // Translate a root to its English meaning(s)
     translate(root, past, singular) {
         // TODO: Use all translations, not just the first one
-        let entry = this.vocabulary[root].translations[0];
+        let translations = [];
+        let entries = this.vocabulary[root].translations;
+        for (let entry of entries) {
+            translations.push(this.conjugateEnglish(entry, past, singular));
+        }
+        return translations;
+    }
+
+    // Conjugate an English word entry.
+    conjugateEnglish(entry, past, singular) {
         if (past) {
             if (typeof entry == "string") {
                 if (entry.slice(-1) == "e") {
