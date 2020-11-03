@@ -94,7 +94,7 @@
         "lesson": 7,
         "translations": [
             ["know", "knew"],
-            ["care about", "cared about"]
+            [["care about", "cares about"], "cared about"]
         ]
     },
     "ישׁב": {
