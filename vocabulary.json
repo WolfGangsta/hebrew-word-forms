@@ -109,7 +109,7 @@
         "root": "ידע",
         "translations": [
             ["know", "knew"],
-            [["care about", "cares about"], "cared about"]
+            "care about"
         ]
     },
     {
@@ -139,7 +139,7 @@
         "lesson": 10,
         "root": "שׁכב",
         "translations": [
-            [["lie down", "lies down"], "lay down"]
+            ["lie down", "lay down"]
         ]
     },
     {
@@ -153,7 +153,7 @@
         "lesson": 11,
         "root": "עבר",
         "translations": [
-            [["go across", "goes across"], "went across"],
+            ["go across", "went across"],
             "transgress"
         ]
     },
@@ -169,7 +169,7 @@
         "root": "פקד",
         "translations": [
             "visit",
-            [["take care of", "takes care of"], "took care of"]
+            ["take care of", "took care of"]
         ]
     },
     {
@@ -235,7 +235,7 @@
         "root": "קרא",
         "translations": [
             "call",
-            [["read aloud", "reads aloud"], "read aloud"]
+            ["read aloud", "read aloud"]
         ]
     }
 ]

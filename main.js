@@ -56,7 +56,7 @@ function showRandomWord() {
     let translit = hebrew.transliterate(root);
     let transl = hebrew.translate(root).join(", ") + "; "
         + hebrew.translate(root, false, true).join(", ") + "; "
-        + hebrew.translate(root, true).join(", ");
+        + hebrew.translate(root, true, true).join(", ");
 
     focusedWord.innerHTML = finalRoot;
     transliteration.innerHTML = translit;

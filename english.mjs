@@ -1,20 +1,18 @@
-// Conjugate an English word entry.
-export function conjugate(entry, past, singular) {
-    // TODO: fix broken forms: calles, dwelles, punishs, watchs, gos
-    // TODO: conjugate "be X" forms
+// Conjugate an English verb entry.
+export function conjugate(entry, past, singular, firstPerson) {
     if (past) {
         if (typeof entry == "string") {
-            return addD(entry)
+            return addD(entry, singular);
         } else {
             return entry[1];
         }
     } else if (singular) {
         if (typeof entry == "string") {
-            return addS(entry);
+            return addS(entry, firstPerson);
         } else {
             entry = entry[0];
             if (typeof entry == "string") {
-                return addS(entry);
+                return addS(entry, firstPerson);
             } else {
                 return entry[1];
             }
@@ -27,24 +25,33 @@ export function conjugate(entry, past, singular) {
     }
 }
 
-function addD(verb) {
-    if (verb.slice(-1) == "e") {
-        return verb + "d";
-    } else if (verb.slice(-1) == "y") {
-        return verb.slice(0, -1) + "ied";
-    } else {
-        return verb + "ed";
-    }
+function toBe(past, singular, firstPerson) {
+    if (past) return singular ? "was" : "were";
+    if (singular) return firstPerson ? "am" : "is";
+    return "are";
 }
 
-function addS(verb) {
-    // TODO: Have better -s suffix-adding system
-    if (["sh", "ch"].includes(verb.slice(-1))
-        || verb.slice(-2, -1) == verb.slice(-1)) {
-        return verb + "es";
-    } else if (verb.slice(-1) == "y") {
-        return verb.slice(0, -1) + "ies";
-    } else {
-        return verb + "s";
+function addD(verb, singular) {
+    if (verb.includes(" ")) {
+        let words = verb.split(" ");
+        return addD(words[0], singular) + " " + words.slice(1).join(" ");
     }
+    if (verb == "be") return toBe(true, singular);
+    if (verb.slice(-1) == "e") return verb + "d";
+    if (verb.slice(-1) == "y") return verb.slice(0, -1) + "ied";
+    return verb + "ed";
+}
+
+function addS(verb, firstPerson) {
+    if (verb.includes(" ")) {
+        let words = verb.split(" ");
+        return addS(words[0], firstPerson) + " " + words.slice(1).join(" ");
+    }
+    if (verb == "be") return toBe(false, true, firstPerson);
+    if (["sh", "ch"].includes(verb.slice(-2))
+        || ["s", "o"].includes(verb.slice(-1))) {
+        return verb + "es";
+    }
+    if (verb.slice(-1) == "y") return verb.slice(0, -1) + "ies";
+    return verb + "s";
 }
