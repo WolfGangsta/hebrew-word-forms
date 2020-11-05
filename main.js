@@ -49,9 +49,8 @@ let allRootsDiv = document.createElement("div");
 let allRootsTable = document.createElement("table");
 
 function showRandomWord() {
-    let wordList = Object.keys(vocabulary);
-    let n = Math.floor(Math.random() * wordList.length);
-    let root = wordList[n];
+    let n = Math.floor(Math.random() * hebrew.wordList.length);
+    let root = hebrew.wordList[n];
 
     let finalRoot = hebrew.finalize(root);
     let translit = hebrew.transliterate(root);
@@ -91,7 +90,8 @@ function beginLesson() {
 function main() {
     hebrew = new Hebrew(letterInfo, vocabulary);
 
-    for (let root of Object.keys(vocabulary)) {
+    for (let root of hebrew.wordList) {
+
         let row = document.createElement("tr");
 
         let rootTd = document.createElement("td");
@@ -99,7 +99,7 @@ function main() {
         row.appendChild(rootTd);
 
         let lessonTd = document.createElement("td");
-        lessonTd.innerText = vocabulary[root].lesson;
+        lessonTd.innerText = hebrew.vocabulary[root].lesson;
         lessonTd.setAttribute("style", "text-align:right");
         row.appendChild(lessonTd);
 

@@ -5,8 +5,16 @@ import { Letters, DAGESH } from "./letters.mjs";
 export default class Hebrew {
     constructor(letterInfo, vocabulary) {
         this.letterInfo = letterInfo;
-        this.vocabulary = vocabulary;
         this.letters = new Letters(letterInfo);
+
+        this.wordList = vocabulary.map(word => word.root);
+        this.vocabulary = {};
+        for (let word of vocabulary) {
+            let wordCopy = Object.assign({}, word);
+            delete wordCopy.root;
+            this.vocabulary[word.root] = wordCopy;
+        }
+        console.log(this.vocabulary);
     }
 
     // Change the final consonant of a Hebrew word
