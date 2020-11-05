@@ -75,10 +75,14 @@ export default class Hebrew {
 
     // Conjugate an English word entry.
     conjugateEnglish(entry, past, singular) {
+        // TODO: fix broken forms: calles, dwelles, punishs, watchs, gos
+        // TODO: conjugate "be X" forms
         if (past) {
             if (typeof entry == "string") {
                 if (entry.slice(-1) == "e") {
                     return entry + "d";
+                } else if (entry.slice(-1) == "y") {
+                    return entry.slice(0, -1) + "ied";
                 } else {
                     return entry + "ed";
                 }
@@ -91,19 +95,23 @@ export default class Hebrew {
                 if (["sh", "ch"].includes(entry.slice(-1))
                     || entry.slice(-2, -1) == entry.slice(-1)) {
                     return entry + "es";
+                } else if (entry.slice(-1) == "y") {
+                    return entry.slice(0, -1) + "ies";
                 } else {
                     return entry + "s";
                 }
             } else {
                 entry = entry[0];
                 if (typeof entry == "string") {
-                // TODO: Have better -s suffix-adding system
-                if (["sh", "ch"].includes(entry.slice(-1))
-                    || entry.slice(-2, -1) == entry.slice(-1)) {
-                    return entry + "es";
-                } else {
-                    return entry + "s";
-                }
+                    // TODO: Have better -s suffix-adding system
+                    if (["sh", "ch"].includes(entry.slice(-1))
+                        || entry.slice(-2, -1) == entry.slice(-1)) {
+                        return entry + "es";
+                    } else if (entry.slice(-1) == "y") {
+                        return entry.slice(0, -1) + "ies";
+                    } else {
+                        return entry + "s";
+                    }
                 } else {
                     return entry[1];
                 }

@@ -18,7 +18,7 @@
         "root": "כבד",
         "stative": true,
         "translations": [
-            "heavy"
+            "be heavy"
         ]
     },
     {
@@ -132,8 +132,7 @@
         "lesson": 10,
         "root": "מלכ",
         "translations": [
-            "rule",
-            [["is king", "are king"], "was king"]
+            "rule", "be king"
         ]
     },
     {
@@ -174,9 +173,69 @@
         ]
     },
     {
+        "lesson": 12,
+        "root": "גאל",
+        "translations": [
+            "redeem", "claim"
+        ]
+    },
+    {
+        "lesson": 12,
+        "root": "חזק",
+        "translations": [
+            "be strong", "be courageous"
+        ]
+    },
+    {
+        "lesson": 12,
+        "root": "נפל",
+        "translations": [
+            ["fall", "fell"]
+        ]
+    },
+    {
+        "lesson": 12,
+        "root": "עבד",
+        "translations": [
+            "serve", "work", ["worship", "worshipped"]
+        ]
+    },
+    {
+        "lesson": 13,
         "root": "ברא",
         "translations": [
-            "create", "fashion"
+            "create"
+        ]
+    },
+    {
+        "lesson": 13,
+        "root": "חטא",
+        "translations": [
+            ["sin", "sinned"]
+        ]
+    },
+    {
+        "lesson": 13,
+        "root": "מצא",
+        "translations": [
+            ["find", "found"]
+        ]
+    },
+    {
+        "lesson": 13,
+        "root": "נשׂא",
+        "translations": [
+            ["lift", "lifted"],
+            "carry",
+            ["forgive", "forgave"]
+        ]
+    },
+    {
+        "lesson": 13,
+        "root": "קרא",
+        "translations": [
+            "call",
+            [["read aloud", "reads aloud"], "read aloud"]
         ]
     }
 ]
