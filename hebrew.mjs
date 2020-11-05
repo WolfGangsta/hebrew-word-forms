@@ -1,4 +1,5 @@
 import { Letters, DAGESH } from "./letters.mjs";
+import * as English from "./english.mjs";
 
 // TODO: Catalog the rest of the verb root vocabulary
 
@@ -68,60 +69,9 @@ export default class Hebrew {
         let translations = [];
         let entries = this.vocabulary[root].translations;
         for (let entry of entries) {
-            translations.push(this.conjugateEnglish(entry, past, singular));
+            translations.push(English.conjugate(entry, past, singular));
         }
         return translations;
-    }
-
-    // Conjugate an English word entry.
-    conjugateEnglish(entry, past, singular) {
-        // TODO: fix broken forms: calles, dwelles, punishs, watchs, gos
-        // TODO: conjugate "be X" forms
-        if (past) {
-            if (typeof entry == "string") {
-                if (entry.slice(-1) == "e") {
-                    return entry + "d";
-                } else if (entry.slice(-1) == "y") {
-                    return entry.slice(0, -1) + "ied";
-                } else {
-                    return entry + "ed";
-                }
-            } else {
-                return entry[1];
-            }
-        } else if (singular) {
-            if (typeof entry == "string") {
-                // TODO: Have better -s suffix-adding system
-                if (["sh", "ch"].includes(entry.slice(-1))
-                    || entry.slice(-2, -1) == entry.slice(-1)) {
-                    return entry + "es";
-                } else if (entry.slice(-1) == "y") {
-                    return entry.slice(0, -1) + "ies";
-                } else {
-                    return entry + "s";
-                }
-            } else {
-                entry = entry[0];
-                if (typeof entry == "string") {
-                    // TODO: Have better -s suffix-adding system
-                    if (["sh", "ch"].includes(entry.slice(-1))
-                        || entry.slice(-2, -1) == entry.slice(-1)) {
-                        return entry + "es";
-                    } else if (entry.slice(-1) == "y") {
-                        return entry.slice(0, -1) + "ies";
-                    } else {
-                        return entry + "s";
-                    }
-                } else {
-                    return entry[1];
-                }
-            }
-        } else {
-            while (typeof entry != "string") {
-                entry = entry[0];
-            }
-            return entry;
-        }
     }
 
     // Return the theme vowel of a root
