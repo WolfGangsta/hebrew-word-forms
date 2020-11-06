@@ -103,6 +103,29 @@ export default class Hebrew {
         return translit;
     }
 
+    // Translate a word to its English meaning(s)
+    translateWord(root, perfect, person, singular, masculine) {
+        let conjugations = this.translateRoot(
+            root,
+            perfect,
+            singular && person != 2,
+            person == 1
+        );
+        let g = masculine ? "m" : "f";
+        let n = singular ? "s" : "p";
+        let pronoun = "";
+        if (person == 1) pronoun = singular ? "I " : "we ";
+        if (person == 2) pronoun = "you (" + g + n + ") ";
+        if (person == 3) {
+            if (singular) {
+                pronoun = masculine ? "he/it " : "she/it ";
+            } else {
+                pronoun = "they (" + g + ") ";
+            }
+        }
+        return pronoun + conjugations.join(", ");
+    }
+
     // Translate a root to its English meaning(s)
     translateRoot(root, past, singular, firstPerson) {
         let translations = [];
