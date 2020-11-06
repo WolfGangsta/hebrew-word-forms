@@ -15,14 +15,6 @@
     },
     {
         "lesson": 2,
-        "root": "כבד",
-        "stative": true,
-        "translations": [
-            "be heavy"
-        ]
-    },
-    {
-        "lesson": 2,
         "root": "שׁלח",
         "translations": [
             ["send", "sent"]
@@ -236,6 +228,82 @@
         "translations": [
             "call",
             ["read aloud", "read aloud"]
+        ]
+    },
+    {
+        "lesson": 14,
+        "root": "בכה",
+        "translations": [
+            "cry"
+        ]
+    },
+    {
+        "lesson": 14,
+        "root": "בנה",
+        "translations": [
+            ["build", "built"],
+            "fortify"
+        ]
+    },
+    {
+        "lesson": 14,
+        "root": "גלה",
+        "translations": [
+            "reveal",
+            ["go away", "went away"]
+        ]
+    },
+    {
+        "lesson": 14,
+        "root": "חזה",
+        "translations": [
+            ["see", "saw"],
+            ["see a vision", "saw a vision"]
+        ]
+    },
+    {
+        "lesson": 14,
+        "root": "כלה",
+        "translations": [
+            "cease", "finish"
+        ]
+    },
+    {
+        "lesson": 14,
+        "root": "נגע",
+        "translations": [
+            "touch",
+            ["hurt", "hurt"]
+        ]
+    },
+    {
+        "lesson": 14,
+        "root": "נגשׁ",
+        "translations": [
+            "approach"
+        ]
+    },
+    {
+        "lesson": 14,
+        "root": "נסע",
+        "translations": [
+            "start out"
+        ]
+    },
+    {
+        "lesson": 14,
+        "root": "עשׂה",
+        "translations": [
+            ["make", "made"],
+            ["do", "did"]
+        ]
+    },
+    {
+        "lesson": 14,
+        "root": "ראה",
+        "translations": [
+            ["see", "saw"],
+            ["know", "knew"]
         ]
     }
 ]
