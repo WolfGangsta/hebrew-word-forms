@@ -19,9 +19,17 @@ export default class Hebrew {
 
     // Change the final consonant of a Hebrew word
     // to its final form (if applicable) and
-    // TODO: fold repeated letters into one with a dagesh
+    // add weak dageshes where necessary.
     finalize(word) {
         let letts = this.lettersOf(word);
+
+        // Add a weak dagesh to the first letter if it is Begadkefat
+        // TODO: Do this for everywhere there should be a weak dagesh
+        if (this.letters.isBegadkefat(letts[0]) && letts[1] != DAGESH) {
+            letts.splice(1, 0, DAGESH);
+            word = letts.join("");
+        }
+
         for (let i = letts.length - 1; i >= 0; i--) {
             let letter = letts[i];
             if (this.letters.isConsonant(letter)) {
