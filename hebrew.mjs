@@ -4,7 +4,7 @@ import * as English from "./english.mjs";
 // TODO: Catalog the rest of the verb root vocabulary
 
 export default class Hebrew {
-    constructor(letterInfo, vocabulary) {
+    constructor(letterInfo, vocabulary, paradigms) {
         this.letterInfo = letterInfo;
         this.letters = new Letters(letterInfo);
 
@@ -15,6 +15,8 @@ export default class Hebrew {
             delete wordCopy.root;
             this.vocabulary[word.root] = wordCopy;
         }
+
+        this.paradigms = paradigms;
     }
 
     // Change the final consonant of a Hebrew word

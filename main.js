@@ -4,12 +4,21 @@ let hebrew;
 
 let letterInfo;
 let vocabulary;
+let paradigms;
 let promises = [
     new Promise(resolve => {
         fetch("letters.json")
         .then(response => response.json())
         .then(json => {
             letterInfo = json;
+            resolve();
+        });
+    }),
+    new Promise(resolve => {
+        fetch("paradigms.json")
+        .then(response => response.json())
+        .then(json => {
+            paradigms = json;
             resolve();
         });
     }),
@@ -88,7 +97,7 @@ function beginLesson() {
 }
 
 function main() {
-    hebrew = new Hebrew(letterInfo, vocabulary);
+    hebrew = new Hebrew(letterInfo, vocabulary, paradigms);
 
     // Populate word list
     for (let root of hebrew.wordList) {
