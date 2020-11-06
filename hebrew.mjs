@@ -45,14 +45,47 @@ export default class Hebrew {
     transliterate(word) {
         let letts = this.lettersOf(word);
         let translit = "";
+        let vowelP = [];
+        let lastConsonant = "";
         for (let i = 0; i < letts.length; i++) {
             let letter = letts[i];
             let translitLetter = this.letters.transliterate(letter);
             // TODO: Treat dageshes correctly
+            
+            // Do not pronounce silent alef (p. 83)
+            if (letter == "א"
+                && (i == letts.length - 1
+                    ||!this.letters.isVowel(letts[i+1])))
+                continue;
+            
+            // Strong dagesh doubles the last consonant.
+            // Weak dagesh should have already been taken care of.
+            if (letter == DAGESH) {
+                if (!this.letters.isBegadkefat(letts[i-1])
+                    || vowelP[vowelP.length - 2])
+                    translit += lastConsonant;
+                continue;
+            }
+
+            // Do not pronounce silent sheva (p. 14)
+            if (letter == SHEVA
+                && i > 1
+                && this.letters.isVowel(letts[i - 2])
+                && this.letters.isShort(letts[i - 2]))
+            {
+                vowelP.push(false);
+                continue;
+            }
+
+            if (this.letters.isVowel(letter)) vowelP.push(true);
+            
             if (typeof translitLetter == "string") {
+                if (this.letters.isConsonant(letter))
+                    lastConsonant = translitLetter;
                 translit += translitLetter;
             } else {
                 if (letts[i + 1] == DAGESH) {
+                    lastConsonant = translitLetter[1];
                     translit += translitLetter[1];
                     i++;
                 } else {
