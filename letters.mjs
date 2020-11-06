@@ -26,8 +26,21 @@ export class Letters {
         return this.info[letter].isFinal
             || this.info[letter].type == "consonant";
     }
+    isVowel(letter) {
+        return this.info[letter].type == "vowel";
+    }
+    isShort(letter) {
+        return this.info[letter].length <= 1;
+    }
     isGuttural(letter) {
-        return !!this.info[letter].isGuttural;
+        return this.info[letter].isGuttural
+            || (this.info[letter].isFinal
+                && this.info[this.info[letter].regular].isGuttural);
+    }
+    isBegadkefat(letter) {
+        return this.info[letter].isBegadkefat
+            || (this.info[letter].isFinal
+                && this.info[this.info[letter].regular].isBegadkefat);
     }
     isFinalForm(letter) {
         return !!this.info[letter].isFinal;
@@ -37,6 +50,9 @@ export class Letters {
     }
     finalForm(letter) {
         return this.info[letter].final;
+    }
+    regularForm(letter) {
+        return this.info[letter].regular;
     }
     transliterate(letter) {
         if (this.isFinalForm(letter)) {
