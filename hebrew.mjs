@@ -1,4 +1,4 @@
-import { Letters, DAGESH } from "./letters.mjs";
+import { Letters, DAGESH, SHEVA, QAMETS, PATACH, CHOLEM } from "./letters.mjs";
 import * as English from "./english.mjs";
 
 // TODO: Catalog the rest of the verb root vocabulary
