@@ -90,8 +90,8 @@ function beginLesson() {
 function main() {
     hebrew = new Hebrew(letterInfo, vocabulary);
 
+    // Populate word list
     for (let root of hebrew.wordList) {
-
         let row = document.createElement("tr");
 
         let rootTd = document.createElement("td");
@@ -104,7 +104,7 @@ function main() {
         row.appendChild(lessonTd);
 
         let transTd = document.createElement("td");
-        transTd.innerText = hebrew.translate(root).join("; ");
+        transTd.innerText = hebrew.translateRoot(root).join("; ");
         row.appendChild(transTd);
         
         allRootsDiv.appendChild(row);

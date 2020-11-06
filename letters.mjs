@@ -1,6 +1,6 @@
 export const
-    SHEVA = "ְ",
     DAGESH = "ּ",
+    SHEVA = "ְ",
     CHATEF_SEGOL = "ֱ",
     CHATEF_PATACH = "ֲ",
     CHATEF_QAMETS = "ֳ",

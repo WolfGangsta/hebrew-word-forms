@@ -15,7 +15,6 @@ export default class Hebrew {
             delete wordCopy.root;
             this.vocabulary[word.root] = wordCopy;
         }
-        console.log(this.vocabulary);
     }
 
     // Change the final consonant of a Hebrew word
@@ -97,12 +96,11 @@ export default class Hebrew {
     }
 
     // Translate a root to its English meaning(s)
-    translate(root, past, singular) {
-        // TODO: Use all translations, not just the first one
+    translateRoot(root, past, singular, firstPerson) {
         let translations = [];
         let entries = this.vocabulary[root].translations;
         for (let entry of entries) {
-            translations.push(English.conjugate(entry, past, singular));
+            translations.push(English.conjugate(entry, past, singular, firstPerson));
         }
         return translations;
     }
