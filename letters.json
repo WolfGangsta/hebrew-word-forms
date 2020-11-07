@@ -264,13 +264,14 @@
         "name": "cholem-vav",
         "type": "vowel",
         "class": "a",
-        "length": "3",
+        "length": 3,
         "transliteration": "o"
     },
     "וּ": {
         "name": "shureq",
         "type": "vowel",
         "class": "u",
+        "length": 3,
         "transliteration": "u"
     }
 }

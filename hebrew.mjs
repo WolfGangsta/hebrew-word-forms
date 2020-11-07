@@ -34,7 +34,10 @@ export default class Hebrew {
 
         for (let i = letts.length - 1; i >= 0; i--) {
             let letter = letts[i];
-            if (this.letters.isConsonant(letter)) {
+            if (this.letters.isConsonant(letter)
+                || (this.letters.isVowel(letter)
+                    && this.letters.isLong(letter)))
+            {
                 if (this.letters.hasFinalForm(letter)) {
                     let replacement = this.letters.finalForm(letter);
                     return (

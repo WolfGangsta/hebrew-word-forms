@@ -32,6 +32,9 @@ export class Letters {
     isShort(letter) {
         return this.info[letter].length <= 1;
     }
+    isLong(letter) {
+        return this.info[letter].length == 3;
+    }
     isGuttural(letter) {
         return this.info[letter].isGuttural
             || (this.info[letter].isFinal
