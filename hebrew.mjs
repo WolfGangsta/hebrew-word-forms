@@ -213,32 +213,10 @@ export class Word {
         // TODO: Define these functions
 
         // Add vowels to root
-        {
-            if (this.perfect) {
-                this.letts = [
-                    this.letts[0], QAMETS,
-                    this.letts[1], PATACH,
-                    this.letts[2]
-                ];
-            } else {
-                this.letts = [
-                    this.letts[0], SHEVA,
-                    this.letts[1], this.hb.themeVowel(this.root),
-                    this.letts[2]
-                ];
-            }
-        }
+        this.addVowels();
 
-        // I Nun, III Hey??
+        // III Hey??
         // Mutate root as needed
-        // if (this.letts[0] == "נ") {
-        //     this.letts = [
-        //         this.letts[2],
-        //         DAGESH,
-        //         this.letts[3],
-        //         this.letts[4]
-        //     ];
-        // }
 
         // Add prefix and suffix
         let form = this.hb.paradigms.qal
@@ -264,7 +242,9 @@ export class Word {
         this.applyINun();
 
         // LQCH irregular root
+        this.applyLQCH();
 
+        // Assimilate Nuns
         this.assimilateNun();
 
         // TODO: find why this happens; see if it happens with other letters
@@ -278,21 +258,68 @@ export class Word {
         return this;
     }
 
+    addSummary(title, description, before, after) {
+        let sum = document.createElement("div");
+
+        let h3 = document.createElement("h3");
+        h3.innerText = title;
+
+        let p = document.createElement("p");
+        p.append(
+            description,
+            before,
+            " --> ",
+            after,
+            ".",
+        );
+
+        sum.append(h3, p);
+        this.summary.append(sum);
+    }
+
+    addVowels() {
+        let before = this.hb.span(this.str);
+
+        let description = "First, we will add vowels. ";
+        if (this.perfect) {
+            this.letts = [
+                this.letts[0], QAMETS,
+                this.letts[1], PATACH,
+                this.letts[2]
+            ];
+            description += "This verb is conjugated in the qal perfect paradigm, so we use the qamets-patach pattern.";
+        } else {
+            let themeVowel = this.hb.themeVowel(this.root);
+            this.letts = [
+                this.letts[0], SHEVA,
+                this.letts[1], themeVowel,
+                this.letts[2]
+            ];
+            description += "This verb is conjugated in the qal imperfect paradigm, so we use the verb's theme vowel: ";
+            if (themeVowel == PATACH) {
+                description += "patach, because of XXX.";
+            } else {
+                description += "cholem, as usual.";
+            }
+        }
+
+        this.addSummary(
+            "Adding vowels",
+            description,
+            before,
+            this.hb.span(this.str),
+        );
+
+        return this;
+    }
+
     applyINun() {
         if (this.root[0] == "נ" && !this.perfect) {
-            // Update summary
-            let INun = document.createElement("div");
-            let title = document.createElement("h3");
-            title.innerText = "I Nun";
-            let p = document.createElement("p");
-            p.append(
-                "This root is a I Nun root; in the perfect paradigm, the nun is assimilated into the next consonant as a dagesh:",
-                this.hb.span(this.str),
-                " --> ",
-            );
+            // Record state of word beforehand
+            let before = this.hb.span(this.str);
 
             // Find the nun
-            for (let i = 0; i < this.letts.length - 1; i++) {
+            for (let i = 1; i < this.letts.length - 1; i++) {
                 if (this.letts[i] == "נ" && this.letts[i + 1] == SHEVA) {
                     // Get rid of it
                     this.letts.splice(i, 2);
@@ -304,34 +331,57 @@ export class Word {
                 }
             }
 
-            p.append(
+            this.addSummary(
+                "I Nun",
+                "This root is a I Nun root; in the perfect paradigm, the nun is assimilated into the next consonant as a dagesh: ",
+                before,
                 this.hb.span(this.str),
-                ".",
             );
-            INun.append(title, p);
-            this.summary.append(INun);
+        }
+
+        return this;
+    }
+
+    applyLQCH() {
+        if (this.root.join("") == "לקח" && !this.perfect) {
+            // Record state of word beforehand
+            let before = this.hb.span(this.str);
+
+            // Find the nun
+            for (let i = 0; i < this.letts.length - 1; i++) {
+                if (this.letts[i] == "ל" && this.letts[i + 1] == SHEVA) {
+                    // Get rid of it
+                    this.letts.splice(i, 2);
+
+                    // Put the dagesh in
+                    this.letts.splice(i + 1, 0, DAGESH);
+
+                    break;
+                }
+            }
+
+            this.addSummary(
+                "Irregular root: לקח",
+                "This root is irregular; in the perfect paradigm, the lamed is assimilated into the next consonant as a dagesh: ",
+                before,
+                this.hb.span(this.str),
+            );
         }
 
         return this;
     }
 
     assimilateNun() {
-        let assimNun = document.createElement("div");
-        let title = document.createElement("h3");
-        title.innerText = "Nun assimilation";
-        let p = document.createElement("p");
-        p.append(
-            "This word has a nun with a sheva, which assimilates into the next consonant as a dagesh: ",
-            this.hb.span(this.str),
-            " --> ",
-        );
+        // Record state of word beforehand
+        let before = this.hb.span(this.str);
 
         let nunFound = false;
 
         // Find short vowel + nun + sheva
         for (let i = 0; i < this.letts.length - 2; i++) {
             if (this.letts[i] == "נ"
-                && this.letts[i + 1] == SHEVA)
+                && this.letts[i + 1] == SHEVA
+                && this.letts[i + 2] == "נ")
             {
                 // Get rid of it
                 this.letts.splice(i, 2);
@@ -343,12 +393,12 @@ export class Word {
             }
         }
 
-        p.append(
+        if (nunFound) this.addSummary(
+            "Nun assimilation",
+            "This word has a double nun, which is spelled with a dagesh: ",
+            before,
             this.hb.span(this.str),
-            ".",
         );
-        assimNun.append(title, p);
-        if (nunFound) this.summary.append(assimNun);
 
         return this;
     }
