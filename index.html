@@ -6,8 +6,60 @@
     </head>
     <body>
         <h1>Main Page</h1>
-        <button id="begin">Begin</button>
-        <div id="workArea"></div>
+        <div id="tabSelectors" class="tab">
+            <button id="lessonButton" class="tablinks">
+                Learn
+            </button>
+            <button id="testButton" class="tablinks">
+                Test
+            </button>
+            <button id="vocabButton" class="tablinks">
+                Vocabulary list
+            </button>
+        </div>
+        <div id="workArea">
+            <div id="lessonDiv" class="tabcontent">
+                <div id="lessonHeader">
+                    <select id="root">
+                        <option></option>
+                    </select>
+                    <span id="strength">None selected</span>
+                </div>
+                <div id="paradigms">
+                    <table id="perfect">
+                        <thead>
+                            <tr>
+                                <th colspan="2" scope="col">
+                                    Perfect paradigm
+                                </th>
+                            </tr>
+                            <tr>
+                                <th scope="col">Singular</th>
+                                <th scope="col">Plural</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <table id="imperfect">
+                        <thead>
+                            <tr>
+                                <th colspan="2" scope="col">
+                                    Imperfect paradigm
+                                </th>
+                            </tr>
+                            <tr>
+                                <th scope="col">Singular</th>
+                                <th scope="col">Plural</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="testDiv" class="tabcontent"></div>
+            <div id="vocabDiv" class="tabcontent"></div>
+        </div>
         <script src="main.js" type="module"></script>
+        <div id="explanation"></div>
     </body>
 </html>

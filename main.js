@@ -1,4 +1,4 @@
-import Hebrew from "./hebrew.mjs";
+import { Hebrew, Word } from "./hebrew.mjs";
 
 let hebrew;
 
@@ -33,67 +33,94 @@ let promises = [
 ];
 
 let workArea = document.getElementById("workArea");
-let beginButton = document.getElementById("begin");
 
-let lessonDiv = document.createElement("div");
+let lessonDiv = document.getElementById("lessonDiv");
+let rootSelect = document.getElementById("root");
+rootSelect.addEventListener("input", function() {
+    let root = this.selectedOptions[0].innerText;
+    if (root != "") showWord(root);
+});
+let perfTab = document.getElementById("perfect");
+let impfTab = document.getElementById("imperfect");
 
-let focusedWord = document.createElement("p");
-focusedWord.style = "font-size: 36px";
-lessonDiv.appendChild(focusedWord);
-let transliteration = document.createElement("p");
-lessonDiv.appendChild(transliteration);
-let translation = document.createElement("p");
-lessonDiv.appendChild(translation);
+let testDiv = document.getElementById("testDiv");
 
-let randomButton = document.createElement("button");
-randomButton.innerText = "Random word";
-randomButton.addEventListener("click", showRandomWord);
+let vocabDiv = document.getElementById("vocabDiv");
+let vocabTable = document.createElement("table");
+vocabDiv.appendChild(vocabTable);
 
-let showAllButton = document.createElement("button");
-showAllButton.innerText = "Show all";
-showAllButton.addEventListener("click", showAll);
+let tabButtons = document.getElementsByClassName("tablinks");
+for (let tabButton of tabButtons) {
+    tabButton.addEventListener("click", function() {
+        showTab(this.id.slice(0, -6) + "Div");
+    });
+}
 
-let allRootsDiv = document.createElement("div");
+function showForm(root, perfect, person, singular, masculine) {
+    let word = new Word(hebrew, root, perfect, person, singular, masculine)
+    .conjugate();
+    let transl = hebrew.translateWord(root, perfect, person, singular, masculine);
 
-let allRootsTable = document.createElement("table");
+    let div = document.createElement("div");
 
-function showRandomWord() {
-    let n = Math.floor(Math.random() * hebrew.wordList.length);
-    let root = hebrew.wordList[n];
+    let p = document.createElement("p");
+    let h = hebrew.span(word.str);
+    p.append(h, ": " + transl);
+    div.append(p);
 
-    let finalRoot = hebrew.finalize(root);
-    let translit = hebrew.transliterate(root);
-    let transl = hebrew.translateRoot(root).join(", ") + "; "
-        + hebrew.translateRoot(root, false, true).join(", ") + "; "
-        + hebrew.translateRoot(root, true, true).join(", ");
+    let dialog = document.createElement("div");
+    dialog.append(word.summary);
+    document.body.append(dialog);
+    div.addEventListener("click", function() {
+        let expl = document.getElementById("explanation");
+        expl.innerHTML = "";
+        expl.append(dialog);
+        expl.display = "block";
+    })
 
-    focusedWord.innerHTML = finalRoot;
-    transliteration.innerHTML = translit;
-    translation.innerHTML = transl;
+    return div;
+}
 
-    if (allRootsDiv.parentElement) {
-        workArea.removeChild(allRootsDiv);
-    }
-    if (!lessonDiv.parentElement) {
-        workArea.appendChild(lessonDiv);
+function showWord(root) {
+    for (let perf = 1; perf >= 0; perf--) {
+        let tab = perf ? perfTab : impfTab;
+        let tbody = tab.children[tab.children.length - 1];
+
+        while (tbody.children.length > 0) {
+            tbody.removeChild(tbody.children[0]);
+        }
+
+        for (let person = 3; person >= 1; person--) {
+            for (let masc = 1; masc >= 0; masc--) {
+                let tr = document.createElement("tr");
+                tr.className = masc ? "m" : "f";
+                for (let sing = 1; sing >= 0; sing--) {
+                    let td = document.createElement("td");
+                    td.appendChild(showForm(root, perf, person, sing, masc));
+                    if (person == 1
+                        || (person == 3 && perf && !sing))
+                    {
+                        if (masc) {
+                            td.rowSpan = 2;
+                            td.className = "c";
+                        } else {
+                            continue;
+                        }
+                    }
+                    tr.appendChild(td);
+                }
+                tbody.appendChild(tr);
+            }
+        }
     }
 }
 
-function showAll() {
-    if (lessonDiv.parentElement) {
-        workArea.removeChild(lessonDiv);
-    }
-    if (!allRootsDiv.parentElement) {
-        workArea.appendChild(allRootsDiv);
-    }
-}
+function showTab(id) {
+    for (let child of workArea.children)
+        child.style.display = "none";
 
-function beginLesson() {
-    workArea.appendChild(randomButton);
-    workArea.appendChild(showAllButton);
-
-    workArea.appendChild(lessonDiv);
-    showRandomWord();
+    let element = document.getElementById(id);
+    element.style.display = "block";
 }
 
 function main() {
@@ -116,12 +143,10 @@ function main() {
         transTd.innerText = hebrew.translateRoot(root).join("; ");
         row.appendChild(transTd);
         
-        allRootsDiv.appendChild(row);
+        vocabTable.appendChild(row);
     }
-    allRootsDiv.appendChild(allRootsTable);
 
-    beginButton.addEventListener("click", beginLesson);
-    
+
     let genesis = "בְּרֵאשִׁית בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ׃";
 
     let genesisP = document.createElement("p");

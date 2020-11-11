@@ -1,8 +1,45 @@
 body {
-    background-color: gray;
+    font-size: 16px;
+}
+
+#workArea {
+    background-color: lightgray;
+    text-align: center;
+}
+
+#paradigms {
+    display: flex;
+    justify-content: center;
+}
+
+#lessonDiv {
+    display: flex;
+    flex-direction: column;
+}
+
+#explanation {
+    /* TODO: Make this a pop-up dialog*/
+    position: absolute;
+    display: none;
 }
 
 table {
-    background-color: rgb(206, 121, 90);
     margin: 4px;
+}
+
+.m {
+    background-color: lightskyblue;
+    border-top: 1px black;
+}
+
+.f {
+    background-color: lightpink;
+}
+
+.c {
+    background-color: lightgreen;
+}
+
+.hebrewText {
+    font-size: 36px;
 }
