@@ -62,18 +62,17 @@ export default class Hebrew {
         for (let i = 0; i < letts.length; i++) {
             let letter = letts[i];
             let translitLetter = this.letters.transliterate(letter);
-            // TODO: Treat dageshes correctly
             
             // Do not pronounce silent alef (p. 83)
             if (letter == "א"
                 && (i == letts.length - 1
-                    ||!this.letters.isVowel(letts[i+1])))
+                    || !this.letters.isVowel(letts[i + 1])))
                 continue;
             
             // Strong dagesh doubles the last consonant.
             // Weak dagesh should have already been taken care of.
             if (letter == DAGESH) {
-                if (!this.letters.isBegadkefat(letts[i-1])
+                if (!this.letters.isBegadkefat(letts[i - 1])
                     || vowelP[vowelP.length - 2])
                     translit += lastConsonant;
                 continue;
@@ -89,7 +88,7 @@ export default class Hebrew {
                 continue;
             }
 
-            if (this.letters.isVowel(letter)) vowelP.push(true);
+            vowelP.push(this.letters.isVowel(letter));
             
             if (typeof translitLetter == "string") {
                 if (this.letters.isConsonant(letter))
@@ -113,7 +112,7 @@ export default class Hebrew {
         let conjugations = this.translateRoot(
             root,
             perfect,
-            singular && person != 2,
+            false, /* singular && person != 2, */
             person == 1
         );
         let g = masculine ? "m" : "f";
@@ -128,6 +127,7 @@ export default class Hebrew {
                 pronoun = "they (" + g + ") ";
             }
         }
+        if (!perfect) pronoun += "will ";
         return pronoun + conjugations.join(", ");
     }
 
