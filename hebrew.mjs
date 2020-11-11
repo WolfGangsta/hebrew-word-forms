@@ -124,7 +124,8 @@ export class Hebrew {
             if (singular) {
                 pronoun = masculine ? "he/it " : "she/it ";
             } else {
-                pronoun = "they (" + g + ") ";
+                pronoun = "they ";
+                if (!perfect) pronoun += "(" + g + ") ";
             }
         }
         if (!perfect) pronoun += "will ";
