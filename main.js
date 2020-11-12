@@ -63,20 +63,17 @@ function showForm(root, perfect, person, singular, masculine) {
 
     let div = document.createElement("div");
 
+    let details = document.createElement("details");
+    let summary = document.createElement("summary");
+
     let p = document.createElement("p");
     let h = hebrew.span(word.str);
     p.append(h, ": " + transl);
-    div.append(p);
 
-    let dialog = document.createElement("div");
-    dialog.append(word.summary);
-    document.body.append(dialog);
-    div.addEventListener("click", function() {
-        let expl = document.getElementById("explanation");
-        expl.innerHTML = "";
-        expl.append(dialog);
-        expl.display = "block";
-    })
+    summary.append(p);
+    details.append(summary, word.summary);
+
+    div.append(details);
 
     return div;
 }
