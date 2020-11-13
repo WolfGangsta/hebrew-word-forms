@@ -23,14 +23,20 @@ export class Letters {
         this.info = letterInfo;
     }
     name(letter) {
-        return this.info[letter].name;
+        let info = this.info[letter];
+        return info ? info.name : "";
     }
     isConsonant(letter) {
-        return this.info[letter].isFinal
-            || this.info[letter].type == "consonant";
+        let info = this.info[letter];
+        if (info) {
+            return info.isFinal
+                || info.type == "consonant";
+        }
+        return false;
     }
     isVowel(letter) {
-        return this.info[letter].type == "vowel";
+        let info = this.info[letter];
+        return info? info.type == "vowel" : false;
     }
     isShort(letter) {
         return this.info[letter].length <= 1;

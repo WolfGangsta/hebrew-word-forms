@@ -33,9 +33,7 @@ export class Hebrew {
             // Do not pronounce silent alef (p. 83)
             if (letter == "א"
                 && (i == letts.length - 1
-                    || !this.letters.isVowel(letts[i + 1])
-                    || i == 0
-                    || !this.letters.isVowel(letts[i - 1])))
+                    || !this.letters.isVowel(letts[i + 1])))
                 continue;
 
             // Strong dagesh doubles the last consonant.
@@ -48,13 +46,21 @@ export class Hebrew {
             }
 
             // Do not pronounce silent sheva (p. 14)
-            if (letter == SHEVA
-                && i > 1
-                && this.letters.isVowel(letts[i - 2])
-                && this.letters.isShort(letts[i - 2]))
-            {
-                vowelP.push(false);
-                continue;
+            if (letter == SHEVA) {
+                let lastVowel;
+                if (letts[i - 2] == "א") {
+                    lastVowel = letts[i - 3];
+                } else {
+                    lastVowel = letts[i - 2];
+                }
+
+                if (this.letters.isVowel(lastVowel)
+                    && this.letters.isShort(lastVowel)
+                    && lastVowel != SHEVA)
+                {
+                    vowelP.push(false);
+                    continue;
+                }
             }
 
             vowelP.push(this.letters.isVowel(letter));
