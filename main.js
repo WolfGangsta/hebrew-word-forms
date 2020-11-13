@@ -36,9 +36,14 @@ let workArea = document.getElementById("workArea");
 
 let lessonDiv = document.getElementById("lessonDiv");
 let rootSelect = document.getElementById("root");
+let rootInfo = document.getElementById("rootInfo");
 rootSelect.addEventListener("input", function() {
     let root = this.selectedOptions[0].innerText;
-    if (root != "") showWord(root);
+    if (root != "") {
+        let weaknesses = hebrew.weaknesses(hebrew.lettersOf(root));
+        rootInfo.innerText = weaknesses.join(", ");
+        showWord(root);
+    }
 });
 let perfTab = document.getElementById("perfect");
 let impfTab = document.getElementById("imperfect");

@@ -81,6 +81,29 @@ export class Hebrew {
         return translit;
     }
 
+    // Find a root's weak parts
+    weaknesses(root) {
+        let weaknesses = [];
+
+        if (this.letters.isGuttural(root[0])) {
+            weaknesses.push("I Guttural");
+        } else if (root[0] == "נ") {
+            weaknesses.push("I Nun");
+        } else if (root == "לקח") {
+            weaknesses.push("Irregular");
+        }
+
+        if (root[2] == "א") {
+            weaknesses.push("III Alef");
+        } else if (root[2] == "ה") {
+            weaknesses.push("III Hey");
+        }
+
+        if (weaknesses.length == 0) weaknesses.push("Strong");
+
+        return weaknesses;
+    }
+
     // Translate a word to its English meaning(s)
     translateWord(root, perfect, person, singular, masculine) {
         let conjugations = this.translateRoot(
