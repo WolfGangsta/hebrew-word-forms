@@ -33,7 +33,9 @@ export class Hebrew {
             // Do not pronounce silent alef (p. 83)
             if (letter == "א"
                 && (i == letts.length - 1
-                    || !this.letters.isVowel(letts[i + 1])))
+                    || !this.letters.isVowel(letts[i + 1])
+                    || i == 0
+                    || !this.letters.isVowel(letts[i - 1])))
                 continue;
 
             // Strong dagesh doubles the last consonant.
@@ -65,7 +67,6 @@ export class Hebrew {
                 if (letts[i + 1] == DAGESH) {
                     lastConsonant = translitLetter[1];
                     translit += translitLetter[1];
-                    i++;
                 } else {
                     translit += translitLetter[0];
                 }
