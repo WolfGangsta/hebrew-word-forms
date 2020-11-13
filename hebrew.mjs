@@ -159,17 +159,17 @@ export class Hebrew {
         return span;
     }
     
-    // Split a word into a list of letters
-    lettersOf(word) {
+    // Split Hebrew text into a list of letters
+    lettersOf(text) {
         let letts = [];
-        for (let i = 0; i < word.length; i++) {
-            let doubleLetter = word.slice(i, i + 2);
+        for (let i = 0; i < text.length; i++) {
+            let doubleLetter = text.slice(i, i + 2);
             if (this.letterInfo[doubleLetter]) {
                 letts.push(doubleLetter);
                 i++;
                 continue;
             }
-            let singleLetter = word[i];
+            let singleLetter = text[i];
             if (this.letterInfo[singleLetter]) {
                 letts.push(singleLetter);
             }
