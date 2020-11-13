@@ -19,39 +19,6 @@ export class Hebrew {
         this.paradigms = paradigms;
     }
 
-    // Change the final consonant of a Hebrew word
-    // to its final form (if applicable) and
-    // add weak dageshes where necessary.
-    finalize(word) {
-        let letts = this.lettersOf(word);
-
-        // Add a weak dagesh to the first letter if it is Begadkefat
-        // TODO: Do this for everywhere there should be a weak dagesh
-        if (this.letters.isBegadkefat(letts[0]) && letts[1] != DAGESH) {
-            letts.splice(1, 0, DAGESH);
-            word = letts.join("");
-        }
-
-        for (let i = letts.length - 1; i >= 0; i--) {
-            let letter = letts[i];
-            if (this.letters.isConsonant(letter)
-                || (this.letters.isVowel(letter)
-                    && this.letters.isLong(letter)))
-            {
-                if (this.letters.hasFinalForm(letter)) {
-                    let replacement = this.letters.finalForm(letter);
-                    return (
-                        letts.slice(0, i).join('')
-                        + replacement
-                        + letts.slice(i + 1).join('')
-                    );
-                }
-                return word;
-            }
-        }
-        return word;
-    }
-
     // Transliterate a word, changing each letter
     // to its appropriate Latin-alphabet analog
     transliterate(word) {
@@ -140,13 +107,6 @@ export class Hebrew {
             translations.push(English.conjugate(entry, past, singular, firstPerson));
         }
         return translations;
-    }
-
-    // Return the theme vowel of a root
-    themeVowel(root) {
-        let letts = this.lettersOf(root);
-        if (this.letters.isGuttural(letts[2])) return PATACH;
-        return CHOLEM;
     }
 
     // Create a <span> element of Hebrew
@@ -252,8 +212,8 @@ export class Word {
             this.letts.push(SHEVA);
         }
 
-        // er... a bit strange. Put finalize in Word?
-        this.str = this.hb.finalize(this.str);
+        // Finalize the spelling
+        this.finalize();
 
         return this;
     }
@@ -289,7 +249,7 @@ export class Word {
             ];
             description += "This verb is conjugated in the qal perfect paradigm, so we use the qamets-patach pattern.";
         } else {
-            let themeVowel = this.hb.themeVowel(this.root);
+            let themeVowel = this.themeVowel();
             this.letts = [
                 this.letts[0], SHEVA,
                 this.letts[1], themeVowel,
@@ -401,5 +361,62 @@ export class Word {
         );
 
         return this;
+    }
+
+    // Change the final consonant
+    // to its final form (if applicable) and
+    // add weak dageshes where necessary.
+    finalize() {
+        // Record state of word beforehand
+        let before = this.hb.span(this.str);
+        let description = [];
+
+        // Add a weak dagesh to the first letter if it is Begadkefat
+        // TODO: Do this for everywhere there should be a weak dagesh
+        if (this.hb.letters.isBegadkefat(this.letts[0])
+            && this.letts[1] != DAGESH)
+        {
+            this.letts.splice(1, 0, DAGESH);
+            description.push(
+                "add a weak dagesh to the beginning "
+                + this.hb.letters.name(this.letts[0])
+            );
+        }
+
+        // Change the last letter to its final form,
+        // if applicable
+        for (let i = this.letts.length - 1; i >= 0; i--) {
+            let letter = this.letts[i];
+            if (this.hb.letters.isConsonant(letter)
+                || (this.hb.letters.isVowel(letter)
+                    && this.hb.letters.isLong(letter)))
+            {
+                if (this.hb.letters.hasFinalForm(letter)) {
+                    let replacement = this.hb.letters.finalForm(letter);
+                    this.letts.splice(i, 1, replacement);
+                    description.push(
+                        "change the last "
+                        + this.hb.letters.name(letter)
+                        + " to its final form"
+                    );
+                }
+                break;
+            }
+        }
+
+        if (description.length > 0 ) this.addSummary(
+            "Last steps",
+            "Finally, we " + description.join(" and ") + ": ",
+            before,
+            this.hb.span(this.str),
+        );
+
+        return this;
+    }
+
+    // Return the theme vowel of the root
+    themeVowel() {
+        if (this.hb.letters.isGuttural(this.root[2])) return PATACH;
+        return CHOLEM;
     }
 }

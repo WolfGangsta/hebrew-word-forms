@@ -22,6 +22,9 @@ export class Letters {
     constructor(letterInfo) {
         this.info = letterInfo;
     }
+    name(letter) {
+        return this.info[letter].name;
+    }
     isConsonant(letter) {
         return this.info[letter].isFinal
             || this.info[letter].type == "consonant";

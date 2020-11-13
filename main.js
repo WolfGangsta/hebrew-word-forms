@@ -139,7 +139,7 @@ function main() {
         let row = document.createElement("tr");
 
         let rootTd = document.createElement("td");
-        rootTd.innerText = hebrew.finalize(root);
+        rootTd.innerText = new Word(hebrew, root).finalize();
         row.appendChild(rootTd);
 
         let lessonTd = document.createElement("td");
