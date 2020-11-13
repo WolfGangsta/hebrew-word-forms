@@ -174,27 +174,19 @@ export class Word {
         // TODO: Define these functions
 
         // Add vowels to root
-        this.addVowels();
+        this.createBaseForm();
 
         // III Hey??
         // Mutate root as needed
 
         // Add prefix and suffix
-        let form = this.hb.paradigms.qal
-        [this.perfect ? "perfect" : "imperfect"]
-        [this.singular ? "singular" : "plural"]
-        [this.person];
-        if (form.m) form = form[this.masculine ? "m" : "f"];
-
-        this.str = (form[0] || "") + this.str + (form[1] || "");
+        this.addAffixes();
 
         // Compensatory lengthening (p. 25)
         // TODO: Make this rule apply more generally
         if (this.letts[4] == "א" || this.letts[4] == "ה") {
             this.letts[3] = QAMETS;
         }
-
-        // Shorten vowels
 
         // I Guttural, III Alef, III Hey
         // "a"-ify/lengthen vowels
@@ -238,17 +230,21 @@ export class Word {
         this.summary.append(sum);
     }
 
-    addVowels() {
+    createBaseForm() {
         let before = this.hb.span(this.str);
 
-        let description = "First, we will add vowels. ";
+        let description = (
+            "First, we will create the base form of the qal "
+            + (this.perfect ? "perfect" : "imperfect")
+            + " paradigm, with "
+        );
         if (this.perfect) {
             this.letts = [
                 this.letts[0], QAMETS,
                 this.letts[1], PATACH,
                 this.letts[2]
             ];
-            description += "This verb is conjugated in the qal perfect paradigm, so we use the qamets-patach pattern.";
+            description += "qamets and patach: ";
         } else {
             let themeVowel = this.themeVowel();
             this.letts = [
@@ -256,16 +252,76 @@ export class Word {
                 this.letts[1], themeVowel,
                 this.letts[2]
             ];
-            description += "This verb is conjugated in the qal imperfect paradigm, so we use the verb's theme vowel: ";
+            description += "sheva and the theme vowel (which is ";
             if (themeVowel == PATACH) {
-                description += "patach, because of XXX.";
+                // TODO: describe XXX
+                description += "patach, because of XXX): ";
             } else {
-                description += "cholem, as usual.";
+                description += "cholem, as usual): ";
             }
         }
 
         this.addSummary(
-            "Adding vowels",
+            "Creating the base form",
+            description,
+            before,
+            this.hb.span(this.str),
+        );
+
+        return this;
+    }
+
+    addAffixes() {
+        let before = this.hb.span(this.str);
+
+        let form = this.hb.paradigms.qal
+        [this.perfect ? "perfect" : "imperfect"]
+        [this.singular ? "singular" : "plural"]
+        [this.person];
+        if (form.m) form = form[this.masculine ? "m" : "f"];
+
+        let prefix = form[0] || "";
+        let suffix = form[1] || "";
+
+        let description = (
+            "Now, we create the form for the verb"
+            + (prefix
+                ? (suffix
+                    ? ", adding a prefix and a suffix"
+                    : ", adding a prefix")
+                : (suffix
+                    ? ", adding a suffix"
+                    : ". Lucky for us, this is the perfect 3ms form--we don't have to change anything! "))
+        );
+
+        if ([
+            "ָה",
+            "וּ",
+            "ִי"
+        ].includes(suffix)) {
+            description += (
+                " and shortening the "
+                + this.hb.letters.name(this.letts[3])
+                + " into a sheva"
+            );
+            this.letts[3] = SHEVA;
+        } else if ([
+            "ְתֶּם",
+            "ְתֶּן"
+        ].includes(suffix)) {
+            description += (
+                " and shortening the "
+                + this.hb.letters.name(this.letts[1])
+                + " into a sheva"
+            );
+            this.letts[1] = SHEVA;
+        }
+        if (prefix || suffix) description += ": ";
+
+        this.str = prefix + this.str + suffix;
+
+        this.addSummary(
+            "Adding affixes",
             description,
             before,
             this.hb.span(this.str),
