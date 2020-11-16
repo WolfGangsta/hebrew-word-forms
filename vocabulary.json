@@ -1,5 +1,12 @@
 [
     {
+        "lesson": 0,
+        "root": "קטל",
+        "translations": [
+            "kill"
+        ]
+    },
+    {
         "lesson": 2,
         "root": "אכל",
         "translations": [

@@ -128,11 +128,14 @@ function showTab(id) {
 function main() {
     hebrew = new Hebrew(letterInfo, vocabulary, paradigms);
 
-    let wordList = hebrew.wordList;
-    // let wordList = [
-    //     "קטל",
-    //     "נתנ",
-    // ];
+    // let wordList = hebrew.wordList;
+    let wordList = [
+        "קטל",
+        "עמד",
+        "נפל",
+        "גלה",
+        "מצא",
+    ];
     for (let root of wordList) {
         let opt = document.createElement("option");
         opt.text = root;
