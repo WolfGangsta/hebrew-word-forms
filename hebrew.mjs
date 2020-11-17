@@ -423,8 +423,8 @@ export class Word {
             );
             this.letts[3] = SHEVA;
         } else if ([
-            "ְתֶּם",
-            "ְתֶּן"
+            "ְתֶמ",
+            "ְתֶנ"
         ].includes(suffix)) {
             description += (
                 " and shortening the "
@@ -433,6 +433,11 @@ export class Word {
             );
             this.letts[1] = SHEVA;
         }
+
+        // TODO: Make exception for III Hey, III Alef
+        if (suffix && suffix[1] == "ת")
+            suffix = suffix.slice(0, 2) + DAGESH + suffix.slice(2);
+
         if (prefix || suffix) description += ".";
 
         this.baseForm = this.letts.slice();
@@ -595,9 +600,7 @@ export class Word {
         return this;
     }
 
-    // Change the final consonant
-    // to its final form (if applicable) and
-    // add weak dageshes where necessary.
+    // Add weak dageshes where necessary.
     finalize() {
         // Record state of word beforehand
         let before = this.hb.span(this.str);
@@ -605,24 +608,53 @@ export class Word {
 
         // Add weak dageshes where applicable
         let changed = false;
-        for (let i = 0; i < this.letts.length; i++) {
+        /* for (let i = 0; i < this.letts.length; i++) {
             if (this.hb.letters.isBegadkefat(this.letts[i])
                 && this.letts[i + 1] != DAGESH)
             {
                 // If this isn't the first letter, we need to make sure
                 // the letter comes after a closed syllable.
                 if (i > 0) {
+                    let offset = 1;
                     let lastLetter = this.letts[i - 1];
 
                     // If there is a silent alef, look back one more letter
-                    if (i > 1 && lastLetter == "א")
+                    if (i > 1 && lastLetter == "א") {
+                        offset = 2;
                         lastLetter = this.letts[i - 2];
+                    }
 
                     // If this is a vocal vowel, there is no need to add a dagesh.
-                    // TODO: Acknowledge vocal sheva?
-                    if (this.hb.letters.isVowel(lastLetter)
-                        && lastLetter != SHEVA)
-                        continue;
+                    if (lastLetter == SHEVA) {
+                        // For sheva, check whether it is silent or vocal
+
+                        // Position of sheva
+                        let j = i - offset;
+
+                        if (j > 1) {
+                            let lastLastLetter = this.letts[j - 2];
+
+                            // If there is a silent alef, look back one more letter
+                            if (j > 2 && lastLastLetter == "א") {
+                                lastLastLetter = this.letts[j - 3];
+                            }
+
+                            // Short and silent
+                            if (!this.hb.letters.isVowel(lastLastLetter)
+                                || !this.hb.letters.isShort(lastLastLetter))
+                            {
+                                // It's vocal. No dagesh.
+                                continue;
+                            }
+                        } else {
+                            // It's vocal. No dagesh.
+                            continue;
+                        }
+                    } else {
+                        // Non-sheva vowels are vocal. No dagesh.
+                        if (this.hb.letters.isVowel(lastLetter))
+                            continue;
+                    }
                 }
 
                 // Add a weak dagesh
@@ -630,9 +662,14 @@ export class Word {
                 changed = true;
                 i++;
             }
+        } */
+        if (this.hb.letters.isBegadkefat(this.letts[0])
+            && !this.letts[1] == DAGESH) {
+            this.letts.splice(1, 0, DAGESH);
+            changed = true;
         }
         if (changed) description.push(
-            "add weak dageshes where begadkefats don't directly follow an open syllable"
+            "add a weak dagesh to the first letter, since it is a Begadkefat."
         );
 
         if (description.length > 0 ) this.addSummary(
