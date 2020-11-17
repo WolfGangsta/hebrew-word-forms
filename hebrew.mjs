@@ -85,12 +85,20 @@ export class Hebrew {
     weaknesses(root) {
         let weaknesses = [];
 
+        if (root == "לקח") {
+            weaknesses.push("Irregular");
+        }
+
         if (this.letters.isGuttural(root[0])) {
             weaknesses.push("I Guttural");
         } else if (root[0] == "נ") {
             weaknesses.push("I Nun");
-        } else if (root == "לקח") {
-            weaknesses.push("Irregular");
+        } else if (root[0] == "י") {
+            weaknesses.push("I Yod");
+        }
+
+        if (this.letters.isGuttural(root[1])) {
+            weaknesses.push("II Guttural");
         }
 
         if (root[2] == "א") {
@@ -201,6 +209,22 @@ export class Word {
     conjugate(perf, pers, sing, masc) {
 
         // TODO: Define these functions
+
+        // Don't try to conjugate unknown weaknesses
+        let weaknesses = this.hb.weaknesses(this.root);
+        if (weaknesses.includes("II Guttural")
+            || weaknesses.includes("I Yod")
+            || weaknesses.includes("Hollow")
+            || weaknesses.includes("Geminate"))
+        {
+            this.addSummary(
+                "Ummm...",
+                "This root has irregularities I haven't studied yet--it shouldn't be in this list.",
+                ":(",
+                ":("
+            )
+            return this;
+        }
 
         // Add vowels to root
         this.createBaseForm();
