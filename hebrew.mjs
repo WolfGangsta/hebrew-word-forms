@@ -146,7 +146,8 @@ export class Hebrew {
     // Translate a root to its English meaning(s)
     translateRoot(root, past, singular, firstPerson) {
         let translations = [];
-        let entries = this.vocabulary[root].translations;
+        let vocabEntry = this.vocabulary[root];
+        let entries = vocabEntry ? vocabEntry.translations : [];
         for (let entry of entries) {
             translations.push(English.conjugate(entry, past, singular, firstPerson));
         }
