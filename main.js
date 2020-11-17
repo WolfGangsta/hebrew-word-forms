@@ -132,9 +132,15 @@ function main() {
     let wordList = [
         "קטל",
         "עמד",
+        "רחצ",
         "נפל",
+        "יטב",
+        "ישׁב",
         "גלה",
         "מצא",
+        // "קומ",
+        // "סבב",
+        "אכל",
     ];
     for (let root of wordList) {
         let opt = document.createElement("option");
