@@ -254,17 +254,15 @@ export class Word {
         // Add vowels to root
         this.createBaseForm();
 
+        // Compensatory lengthening (p. 25)
+        // TODO: Make this rule apply more generally
+        this.applyIIIGuttural();
+
         // III Hey??
         // Mutate root as needed
 
         // Add prefix and suffix
         this.addAffixes();
-
-        // Compensatory lengthening (p. 25)
-        // TODO: Make this rule apply more generally
-        if (this.letts[4] == "א" || this.letts[4] == "ה") {
-            this.letts[3] = QAMETS;
-        }
 
         // I Guttural, III Alef, III Hey
         // "a"-ify/lengthen vowels
@@ -347,6 +345,38 @@ export class Word {
             before,
             this.hb.span(this.str),
         );
+
+        return this;
+    }
+
+    applyIIIGuttural() {
+        let before = this.hb.span(this.str);
+
+        if (this.letts[4] == "א" || this.letts[4] == "ה") {
+            this.letts[3] = QAMETS;
+            let weakLetter = this.hb.letters.name(this.letts[4]);
+
+            let description = (
+                "The "
+                + weakLetter
+                + " in the final position of this root requires "
+                + "us to change the patach to a qamets."
+            );
+    
+            weakLetter = weakLetter[0].toUpperCase() + weakLetter.slice(1);
+            let title = (
+                "III "
+                + weakLetter
+                + ": Vowel length compensation"
+            );
+    
+            this.addSummary(
+                title,
+                description,
+                before,
+                this.hb.span(this.str),
+            );
+        }
 
         return this;
     }
