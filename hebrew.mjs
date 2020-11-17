@@ -277,6 +277,10 @@ export class Word {
         // Assimilate Nuns
         this.assimilateNun();
 
+        // Assimilate double letters
+        // TODO!!
+        // this.assimilateDoubles();
+
         // TODO: find why this happens; see if it happens with other letters
         if (this.letts.slice(-1) == "כ") {
             this.letts.push(SHEVA);
@@ -520,7 +524,7 @@ export class Word {
             this.addSummary(
                 "I Nun",
                 "This root is a I Nun root; in the imperfect paradigm, the "
-                + "nun is assimilated into the next consonant as a dagesh.",
+                + "nun is assimilated into the next consonant as a strong dagesh.",
                 before,
                 this.hb.span(this.str),
             );
@@ -550,7 +554,7 @@ export class Word {
             this.addSummary(
                 "Irregular root: לקח",
                 "This root is irregular; in the imperfect paradigm, the "
-                + "lamed is assimilated into the next consonant as a dagesh.",
+                + "lamed is assimilated into the next consonant as a strong dagesh.",
                 before,
                 this.hb.span(this.str),
             );
