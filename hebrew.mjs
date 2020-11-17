@@ -327,7 +327,7 @@ export class Word {
                 this.letts[1], PATACH,
                 this.letts[2]
             ];
-            description += "qamets and patach: ";
+            description += "qamets and patach.";
         } else {
             let themeVowel = this.themeVowel();
             this.letts = [
@@ -338,9 +338,9 @@ export class Word {
             description += "sheva and the theme vowel (which is ";
             if (themeVowel == PATACH) {
                 // TODO: describe XXX
-                description += "patach, because of XXX): ";
+                description += "patach, because of XXX).";
             } else {
-                description += "cholem, as usual): ";
+                description += "cholem, as usual).";
             }
         }
 
