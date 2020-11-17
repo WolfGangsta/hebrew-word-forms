@@ -265,6 +265,7 @@ export class Word {
         this.addAffixes();
 
         // I Guttural, III Alef, III Hey
+        this.applyIGuttural();
         // "a"-ify/lengthen vowels
 
         // I Nun 
@@ -346,6 +347,7 @@ export class Word {
             this.hb.span(this.str),
         );
 
+        this.baseForm = this.letts.slice();
         return this;
     }
 
@@ -429,6 +431,8 @@ export class Word {
         }
         if (prefix || suffix) description += ".";
 
+        this.baseForm = this.letts.slice();
+
         this.str = prefix + this.str + suffix;
 
         this.addSummary(
@@ -437,6 +441,60 @@ export class Word {
             before,
             this.hb.span(this.str),
         );
+
+        return this;
+    }
+
+    applyIGuttural() {
+        if (this.hb.letters.isGuttural(this.root[0]) // TODO: Use actual "I Guttural" weakness
+            && this.baseForm[1] == SHEVA) {
+            let before = this.hb.span(this.str);
+
+            let description =
+                "Gutturals such as "
+                + this.hb.letters.name(this.root[0])
+                + " can't take a sheva. ";
+
+            if (!this.perfect) {
+                if (this.singular && this.person == 1) {
+                    description +=
+                        "Ordinarily, they attract a-class vowels, "
+                        + "but in this case the aleph's segol wins out, "
+                        + "so we change the sheva to a chatef-segol.";
+                    this.letts[1] = SEGOL;
+                    this.letts[3] = CHATEF_SEGOL;
+                } else {
+                    if (this.letts[5] == SHEVA) {
+                        description +=
+                            "Instead, they attract a-class vowels. "
+                            + "The next vowel is a sheva, "
+                            + "which is a sure sign we'll use a patach, "
+                            + "not a chatef-patach.";
+                        this.letts[3] = PATACH;
+                    } else {
+                        description += 
+                            "Instead, they attract a-class vowels, "
+                            + "so we change the sheva to a chatef-patach.";
+                        this.letts[3] = CHATEF_PATACH;
+                    }
+                    description +=
+                        " The chireq in the prefix also changes to a patach.";
+                    this.letts[1] = PATACH;
+                }
+            } else {
+                description += 
+                    "Instead, they attract a-class vowels, "
+                    + "so we change the sheva to a chatef-patach. ";
+                this.letts[1] = CHATEF_PATACH;
+            }
+
+            this.addSummary(
+                "I Guttural: \"a\" attraction",
+                description,
+                before,
+                this.hb.span(this.str),
+            );
+        }
 
         return this;
     }
