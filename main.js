@@ -147,7 +147,7 @@ function main() {
         let row = document.createElement("tr");
 
         let rootTd = document.createElement("td");
-        rootTd.innerText = new Word(hebrew, root).finalize();
+        rootTd.innerText = new Word(hebrew, root);
         row.appendChild(rootTd);
 
         let lessonTd = document.createElement("td");

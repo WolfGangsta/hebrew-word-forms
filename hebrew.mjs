@@ -194,7 +194,25 @@ export class Word {
      * @param {String} str
      */
     get str() {
-        return this.letts.join("");
+        let letts = this.letts.slice();
+
+        // Change the last letter to its final form,
+        // if applicable
+        for (let i = letts.length - 1; i >= 0; i--) {
+            let letter = letts[i];
+            if (this.hb.letters.isConsonant(letter)
+                || (this.hb.letters.isVowel(letter)
+                    && this.hb.letters.isLong(letter)))
+            {
+                if (this.hb.letters.hasFinalForm(letter)) {
+                    let replacement = this.hb.letters.finalForm(letter);
+                    letts.splice(i, 1, replacement);
+                }
+                break;
+            }
+        }
+
+        return letts.join("");
     }
 
     set str(str) {
@@ -202,7 +220,7 @@ export class Word {
     }
 
     toString() {
-        return this.letts.join("");
+        return this.str;
     }
 
     // Conjugate a Hebrew word form
@@ -481,38 +499,37 @@ export class Word {
         let before = this.hb.span(this.str);
         let description = [];
 
-        // Add a weak dagesh to the first letter if it is Begadkefat
-        // TODO: Do this for everywhere there should be a weak dagesh
-        if (this.hb.letters.isBegadkefat(this.letts[0])
-            && this.letts[1] != DAGESH)
-        {
-            this.letts.splice(1, 0, DAGESH);
-            description.push(
-                "add a weak dagesh to the beginning "
-                + this.hb.letters.name(this.letts[0])
-            );
-        }
-
-        // Change the last letter to its final form,
-        // if applicable
-        for (let i = this.letts.length - 1; i >= 0; i--) {
-            let letter = this.letts[i];
-            if (this.hb.letters.isConsonant(letter)
-                || (this.hb.letters.isVowel(letter)
-                    && this.hb.letters.isLong(letter)))
+        // Add weak dageshes where applicable
+        let changed = false;
+        for (let i = 0; i < this.letts.length; i++) {
+            if (this.hb.letters.isBegadkefat(this.letts[i])
+                && this.letts[i + 1] != DAGESH)
             {
-                if (this.hb.letters.hasFinalForm(letter)) {
-                    let replacement = this.hb.letters.finalForm(letter);
-                    this.letts.splice(i, 1, replacement);
-                    description.push(
-                        "change the last "
-                        + this.hb.letters.name(letter)
-                        + " to its final form"
-                    );
+                // If this isn't the first letter, we need to make sure
+                // the letter comes after a closed syllable.
+                if (i > 0) {
+                    let lastLetter = this.letts[i - 1];
+
+                    // If there is a silent alef, look back one more letter
+                    if (i > 1 && lastLetter == "א")
+                        lastLetter = this.letts[i - 2];
+
+                    // If this is a vocal vowel, there is no need to add a dagesh.
+                    // TODO: Acknowledge vocal sheva?
+                    if (this.hb.letters.isVowel(lastLetter)
+                        && lastLetter != SHEVA)
+                        continue;
                 }
-                break;
+
+                // Add a weak dagesh
+                this.letts.splice(i + 1, 0, DAGESH);
+                changed = true;
+                i++;
             }
         }
+        if (changed) description.push(
+            "add weak dageshes where begadkefats don't directly follow an open syllable"
+        );
 
         if (description.length > 0 ) this.addSummary(
             "Last steps",
