@@ -664,7 +664,7 @@ export class Word {
             }
         } */
         if (this.hb.letters.isBegadkefat(this.letts[0])
-            && !this.letts[1] == DAGESH) {
+            && !this.letts[1] != DAGESH) {
             this.letts.splice(1, 0, DAGESH);
             changed = true;
         }
