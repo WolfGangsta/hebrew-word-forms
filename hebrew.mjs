@@ -156,7 +156,7 @@ export class Hebrew {
         span.className = "hebrewText";
         return span;
     }
-    
+
     // Split Hebrew text into a list of letters
     lettersOf(text) {
         let letts = [];
@@ -285,19 +285,21 @@ export class Word {
     addSummary(title, description, before, after) {
         let sum = document.createElement("div");
 
-        let h3 = document.createElement("h3");
-        h3.innerText = title;
+        let u = document.createElement("u");
+        u.innerText = title;
 
         let p = document.createElement("p");
         p.append(
             description,
+        );
+        let comparison = document.createElement("p");
+        comparison.append(
             before,
             " --> ",
             after,
-            ".",
-        );
+        )
 
-        sum.append(h3, p);
+        sum.append(u, p, comparison);
         this.summary.append(sum);
     }
 
@@ -362,7 +364,8 @@ export class Word {
                     : ", adding a prefix")
                 : (suffix
                     ? ", adding a suffix"
-                    : ". Lucky for us, this is the perfect 3ms form--we don't have to change anything! "))
+                    : ". Lucky for us, this is the perfect 3ms form--"
+                      + "we don't have to change anything!"))
         );
 
         if ([
@@ -387,7 +390,7 @@ export class Word {
             );
             this.letts[1] = SHEVA;
         }
-        if (prefix || suffix) description += ": ";
+        if (prefix || suffix) description += ".";
 
         this.str = prefix + this.str + suffix;
 
@@ -421,7 +424,8 @@ export class Word {
 
             this.addSummary(
                 "I Nun",
-                "This root is a I Nun root; in the perfect paradigm, the nun is assimilated into the next consonant as a dagesh: ",
+                "This root is a I Nun root; in the imperfect paradigm, the "
+                + "nun is assimilated into the next consonant as a dagesh.",
                 before,
                 this.hb.span(this.str),
             );
@@ -450,7 +454,8 @@ export class Word {
 
             this.addSummary(
                 "Irregular root: לקח",
-                "This root is irregular; in the perfect paradigm, the lamed is assimilated into the next consonant as a dagesh: ",
+                "This root is irregular; in the imperfect paradigm, the "
+                + "lamed is assimilated into the next consonant as a dagesh.",
                 before,
                 this.hb.span(this.str),
             );
@@ -483,7 +488,7 @@ export class Word {
 
         if (nunFound) this.addSummary(
             "Nun assimilation",
-            "This word has a double nun, which is spelled with a dagesh: ",
+            "This word has a double nun, which is spelled with a dagesh.",
             before,
             this.hb.span(this.str),
         );
@@ -533,7 +538,7 @@ export class Word {
 
         if (description.length > 0 ) this.addSummary(
             "Last steps",
-            "Finally, we " + description.join(" and ") + ": ",
+            "Finally, we " + description.join(" and ") + ".",
             before,
             this.hb.span(this.str),
         );
