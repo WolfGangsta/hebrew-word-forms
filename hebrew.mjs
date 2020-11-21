@@ -243,8 +243,6 @@ export class Verb {
     // Conjugate a Hebrew word form
     conjugate(perf, pers, sing, masc) {
 
-        // TODO: Define these functions
-
         // Don't try to conjugate unknown weaknesses
         if (this.weaknesses.includes("II Guttural")
             || this.weaknesses.includes("Hollow")
@@ -265,17 +263,11 @@ export class Verb {
         // Add vowels to root
         this.createBaseForm();
 
-        // TODO: Compensatory lengthening (p. 25)?
-
-        // III Hey??
-        // Mutate root as needed
-
         // Add prefix and suffix
         this.addAffixes();
 
         // I Guttural
         this.applyIGuttural();
-        // "a"-ify/lengthen vowels
 
         // I Nun 
         this.applyINun();

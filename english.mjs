@@ -1,4 +1,5 @@
 // Conjugate an English verb entry.
+// TODO: Fix bad forms: I were, he were, she were
 export function conjugate(entry, past, singular, firstPerson) {
     if (past) {
         if (typeof entry == "string") {
