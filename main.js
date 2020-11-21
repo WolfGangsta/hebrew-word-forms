@@ -130,17 +130,18 @@ function main() {
 
     // let wordList = hebrew.wordList;
     let wordList = [
-        "קטל",
-        "עמד",
-        "רחצ",
-        "נפל",
-        "יטב",
-        "ישׁב",
-        "גלה",
-        "מצא",
-        // "קומ",
-        // "סבב",
-        "אכל",
+        "קטל", // Strong
+        "עמד", // I Guttural
+        // "רחצ", // II Guttural
+        "שׁלח", // III Guttural (not technically a model verb)
+        "נפל", // I Nun
+        "יטב", // I Yod
+        "ישׁב", // I Yod
+        "גלה", // III Hey
+        "מצא", // III Alef
+        // "קומ", // Hollow
+        // "סבב", // Geminate
+        "אכל", // I Alef
     ];
     for (let root of wordList) {
         let opt = document.createElement("option");
