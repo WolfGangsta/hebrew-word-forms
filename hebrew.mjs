@@ -118,31 +118,6 @@ export class Hebrew {
         return weaknesses;
     }
 
-    // Translate a word to its English meaning(s)
-    translateWord(root, perfect, person, singular, masculine) {
-        let conjugations = this.translateRoot(
-            root,
-            perfect,
-            false, /* singular && person != 2, */
-            person == 1
-        );
-        let g = masculine ? "m" : "f";
-        let n = singular ? "s" : "p";
-        let pronoun = "";
-        if (person == 1) pronoun = singular ? "I " : "we ";
-        if (person == 2) pronoun = "you (" + g + n + ") ";
-        if (person == 3) {
-            if (singular) {
-                pronoun = masculine ? "he/it " : "she/it ";
-            } else {
-                pronoun = "they ";
-                if (!perfect) pronoun += "(" + g + ") ";
-            }
-        }
-        if (!perfect) pronoun += "will ";
-        return pronoun + conjugations.join(", ");
-    }
-
     // Translate a root to its English meaning(s)
     translateRoot(root, past, singular, firstPerson) {
         let translations = [];
@@ -183,7 +158,7 @@ export class Hebrew {
     }
 }
 
-export class Word {
+export class Verb {
     constructor(hb, rootStr, perf, pers, sing, masc) {
         this.hb = hb;
         this.root = hb.lettersOf(rootStr);
@@ -230,6 +205,31 @@ export class Word {
         return this.str;
     }
 
+    // Translate the verb to its English meaning(s)
+    translate() {
+        let conjugations = this.hb.translateRoot(
+            this.root.join(""),
+            this.perfect,
+            false, /* this.singular && this.person != 2, */
+            this.person == 1
+        );
+        let g = this.masculine ? "m" : "f";
+        let n = this.singular ? "s" : "p";
+        let pronoun = "";
+        if (this.person == 1) pronoun = this.singular ? "I " : "we ";
+        if (this.person == 2) pronoun = "you (" + g + n + ") ";
+        if (this.person == 3) {
+            if (this.singular) {
+                pronoun = this.masculine ? "he/it " : "she/it ";
+            } else {
+                pronoun = "they ";
+                if (!this.perfect) pronoun += "(" + g + ") ";
+            }
+        }
+        if (!this.perfect) pronoun += "will ";
+        return pronoun + conjugations.join(", ");
+    }
+
     // Conjugate a Hebrew word form
     conjugate(perf, pers, sing, masc) {
 
@@ -246,7 +246,7 @@ export class Word {
                 "Ummm...",
                 "This root has irregularities I haven't studied yet--it shouldn't be in this list.",
                 ":(",
-                ":("
+                "This root has irregularities I haven't studied yet--it shouldn't be in this list.",
             )
             return this;
         }

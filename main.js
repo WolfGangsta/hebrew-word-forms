@@ -1,4 +1,4 @@
-import { Hebrew, Word } from "./hebrew.mjs";
+import { Hebrew, Verb } from "./hebrew.mjs";
 
 let hebrew;
 
@@ -62,9 +62,9 @@ for (let tabButton of tabButtons) {
 }
 
 function showForm(root, perfect, person, singular, masculine) {
-    let word = new Word(hebrew, root, perfect, person, singular, masculine)
+    let word = new Verb(hebrew, root, perfect, person, singular, masculine)
     .conjugate();
-    let transl = hebrew.translateWord(root, perfect, person, singular, masculine);
+    let transl = word.translate();
 
     let div = document.createElement("div");
 
@@ -153,7 +153,7 @@ function main() {
         let row = document.createElement("tr");
 
         let rootTd = document.createElement("td");
-        rootTd.innerText = new Word(hebrew, root);
+        rootTd.innerText = new Verb(hebrew, root);
         row.appendChild(rootTd);
 
         let lessonTd = document.createElement("td");
