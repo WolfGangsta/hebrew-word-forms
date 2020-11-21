@@ -246,9 +246,9 @@ export class Verb {
             || this.weaknesses.includes("Hollow")
             || this.weaknesses.includes("Geminate"))
         {
-            this.addSummary(
+            this.addStep(
                 "Ummm...",
-                "This root has irregularities I haven't studied yet--it shouldn't be in this list.",
+                ":(",
                 ":(",
                 "This root has irregularities I haven't studied yet--it shouldn't be in this list.",
             )
@@ -296,25 +296,48 @@ export class Verb {
         return this;
     }
 
-    addSummary(title, description, before, after) {
-        let sum = document.createElement("div");
+    addStep(title, before, after, ...rules) {
+        let stepDiv = document.createElement("div");
 
-        let u = document.createElement("u");
-        u.innerText = title;
+        let h = document.createElement("h4");
+        h.innerText = title;
+        stepDiv.append(h);
 
-        let p = document.createElement("p");
-        p.append(
-            description,
-        );
+        for (let rule of rules) {
+            let p = document.createElement("p");
+            if (typeof rule == "string") {
+                p.append(rule);
+            } else {
+                let u, i, desc = rule[1];
+
+                if (rule[0]) {
+                    desc = " " + desc;
+
+                    u = document.createElement("u");
+                    u.innerText = rule[0] + ":";
+                }
+
+                if (rule[2]) {
+                    desc += " ";
+
+                    i = document.createElement("i");
+                    i.innerText = "(" + rule[2] + ")";
+                }
+
+                p.append(...[u, desc, i].filter(x => x));
+            }
+            stepDiv.append(p);
+        }
+
         let comparison = document.createElement("p");
         comparison.append(
             before,
             " --> ",
             after,
         )
+        stepDiv.append(comparison);
 
-        sum.append(u, p, comparison);
-        this.summary.append(sum);
+        this.summary.append(stepDiv);
     }
 
     createBaseForm() {
@@ -348,11 +371,11 @@ export class Verb {
             }
         }
 
-        this.addSummary(
+        this.addStep(
             "Creating the base form",
-            description,
             before,
             this.hb.span(this.str),
+            description,
         );
 
         this.baseForm = this.letts.slice();
@@ -380,11 +403,11 @@ export class Verb {
                 + ": Vowel length compensation"
             );
     
-            this.addSummary(
+            this.addStep(
                 title,
-                description,
                 before,
                 this.hb.span(this.str),
+                description,
             );
         }
 
@@ -448,11 +471,11 @@ export class Verb {
 
         this.str = prefix + this.str + suffix;
 
-        this.addSummary(
+        this.addStep(
             "Adding affixes",
-            description,
             before,
             this.hb.span(this.str),
+            description,
         );
 
         return this;
@@ -502,11 +525,11 @@ export class Verb {
                 this.letts[1] = CHATEF_PATACH;
             }
 
-            this.addSummary(
+            this.addStep(
                 "I Guttural: \"a\" attraction",
-                description,
                 before,
                 this.hb.span(this.str),
+                description,
             );
         }
 
@@ -531,12 +554,12 @@ export class Verb {
                 }
             }
 
-            this.addSummary(
+            this.addStep(
                 "I Nun",
-                "This root is a I Nun root; in the imperfect paradigm, the "
-                + "nun is assimilated into the next consonant as a strong dagesh.",
                 before,
                 this.hb.span(this.str),
+                "This root is a I Nun root; in the imperfect paradigm, the "
+                + "nun is assimilated into the next consonant as a strong dagesh.",
             );
         }
 
@@ -561,12 +584,12 @@ export class Verb {
                 }
             }
 
-            this.addSummary(
+            this.addStep(
                 "Irregular root: לקח",
-                "This root is irregular; in the imperfect paradigm, the "
-                + "lamed is assimilated into the next consonant as a strong dagesh.",
                 before,
                 this.hb.span(this.str),
+                "This root is irregular; in the imperfect paradigm, the "
+                + "lamed is assimilated into the next consonant as a strong dagesh.",
             );
         }
 
@@ -595,11 +618,11 @@ export class Verb {
             }
         }
 
-        if (nunFound) this.addSummary(
+        if (nunFound) this.addStep(
             "Nun assimilation",
-            "This word has a double nun, which is spelled with a dagesh.",
             before,
             this.hb.span(this.str),
+            "This word has a double nun, which is spelled with a dagesh.",
         );
 
         return this;
@@ -677,11 +700,11 @@ export class Verb {
             "add a weak dagesh to the first letter, since it is a Begadkefat."
         );
 
-        if (description.length > 0 ) this.addSummary(
+        if (description.length > 0 ) this.addStep(
             "Last steps",
-            "Finally, we " + description.join(" and ") + ".",
             before,
             this.hb.span(this.str),
+            "Finally, we " + description.join(" and ") + ".",
         );
 
         return this;
