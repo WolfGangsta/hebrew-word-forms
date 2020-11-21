@@ -258,9 +258,7 @@ export class Verb {
         // Add vowels to root
         this.createBaseForm();
 
-        // Compensatory lengthening (p. 25)
-        // TODO: Make this rule apply more generally
-        this.applyIIIGuttural();
+        // TODO: Compensatory lengthening (p. 25)?
 
         // III Hey??
         // Mutate root as needed
@@ -268,7 +266,7 @@ export class Verb {
         // Add prefix and suffix
         this.addAffixes();
 
-        // I Guttural, III Alef, III Hey
+        // I Guttural
         this.applyIGuttural();
         // "a"-ify/lengthen vowels
 
@@ -342,12 +340,15 @@ export class Verb {
 
     createBaseForm() {
         let before = this.hb.span(this.str);
+        let rules = [];
 
         let description = (
             "First, we will create the base form of the qal "
             + (this.perfect ? "perfect" : "imperfect")
             + " paradigm, with "
         );
+
+        // Add vowels
         if (this.perfect) {
             this.letts = [
                 this.letts[0], QAMETS,
@@ -355,6 +356,29 @@ export class Verb {
                 this.letts[2]
             ];
             description += "qamets and patach.";
+
+            // III Alef & III Hey
+            if (this.weaknesses.includes("III Alef")
+                || this.weaknesses.includes("III Hey"))
+            {
+                this.letts[3] = QAMETS;
+
+                let weakLetter = this.l.name(this.letts[4]);
+                let weakLetterCaps = weakLetter[0].toUpperCase() + weakLetter.slice(1);
+                let title = "III " + weakLetterCaps;
+                let desc =
+                    "The patach is lengthened to a qamets "
+                    + "due to compensatory lengthening.";
+                let lesson = "14.8"; // TODO: Is it still called that for III Hey??
+
+                let rule = [
+                    title,
+                    desc,
+                    lesson,
+                ];
+
+                rules.push(rule);
+            }
         } else {
             let themeVowel = this.themeVowel();
             this.letts = [
@@ -362,60 +386,54 @@ export class Verb {
                 this.letts[1], themeVowel,
                 this.letts[2]
             ];
-            description += "sheva and the theme vowel (which is ";
+            description += "sheva and the theme vowel.";
+
+            let weakness, rule, lesson;
             if (themeVowel == PATACH) {
-                // TODO: describe XXX
-                description += "patach, because of XXX).";
+                if (this.weaknesses.includes("II Guttural")) {
+                    if (this.weaknesses.includes("III Guttural")) {
+                        weakness = "II/III Guttural";
+                        lesson = "11.4, ???"; // TODO: Find ???
+                    } else {
+                        weakness = "II Guttural";
+                        lesson = "???"; // TODO: Find ???
+                    }
+                } else {
+                    weakness = "III Guttural";
+                    lesson = "11.4";
+                }
+                rule = "The theme vowel is patach, because gutturals attract the \"a\"-sound.";
+            } else if (themeVowel == SEGOL) {
+                weakness = "III Hey";
+                rule = "The theme vowel is segol."
+                lesson = "see 15.7";
             } else {
-                description += "cholem, as usual).";
+                weakness = "Regular";
+                rule = "The theme vowel is cholem.";
+                lesson = "11.4";
             }
+            rules.push([
+                weakness,
+                rule,
+                lesson,
+            ]);
         }
+        rules.unshift(description);
 
         this.addStep(
             "Creating the base form",
             before,
             this.hb.span(this.str),
-            description,
+            ...rules,
         );
 
         this.baseForm = this.letts.slice();
         return this;
     }
 
-    applyIIIGuttural() {
-        let before = this.hb.span(this.str);
-
-        if (this.letts[4] == "א" || this.letts[4] == "ה") {
-            this.letts[3] = QAMETS;
-            let weakLetter = this.l.name(this.letts[4]);
-
-            let description = (
-                "The "
-                + weakLetter
-                + " in the final position of this root requires "
-                + "us to change the patach to a qamets."
-            );
-    
-            weakLetter = weakLetter[0].toUpperCase() + weakLetter.slice(1);
-            let title = (
-                "III "
-                + weakLetter
-                + ": Vowel length compensation"
-            );
-    
-            this.addStep(
-                title,
-                before,
-                this.hb.span(this.str),
-                description,
-            );
-        }
-
-        return this;
-    }
-
     addAffixes() {
         let before = this.hb.span(this.str);
+        let rules = [];
 
         let form = this.hb.paradigms.qal
         [this.perfect ? "perfect" : "imperfect"]
@@ -426,16 +444,16 @@ export class Verb {
         let prefix = form[0] || "";
         let suffix = form[1] || "";
 
-        let description = (
-            "Now, we create the form for the verb"
-            + (prefix
+        let description = "Now, we create the form for the verb";
+        description += (
+            prefix
                 ? (suffix
                     ? ", adding a prefix and a suffix"
                     : ", adding a prefix")
                 : (suffix
                     ? ", adding a suffix"
-                    : ". Lucky for us, this is the perfect 3ms form--"
-                      + "we don't have to change anything!"))
+                    : ". Lucky for us, the perfect 3ms form "
+                      + "doesn't have a prefix or a suffix!")
         );
 
         if ([
@@ -461,11 +479,105 @@ export class Verb {
             this.letts[1] = SHEVA;
         }
 
-        // TODO: Make exception for III Hey, III Alef
-        if (suffix && suffix[1] == "ת")
-            suffix = suffix.slice(0, 2) + DAGESH + suffix.slice(2);
-
         if (prefix || suffix) description += ".";
+        rules.push(description);
+
+        // III Hey
+        if (this.root[2] == "ה") {
+            let rule, lesson;
+            if (this.perfect) {
+                // Perfect forms
+                lesson = "15.6";
+                if (this.person == 3) {
+                    if (this.singular) {
+                        if (this.masculine) {
+                            // 3ms: lengthen patach?
+                            this.letts[3] = QAMETS;
+                            rule = "In the perfect 3ms form, the patach becomes a qamets."
+                        } else {
+                            // 3fs: replace hey with tav
+                            this.letts[4] = "ת";
+                            rule = "In the perfect 3ms form, "
+                                + "the hey is replaced with a tav before the suffix is added.";
+                        }
+                    } else {
+                        // 3cp: remove -ah
+                        this.letts.splice(3, 2);
+                        rule = "This form loses the qamets-hey entirely "
+                            + "to make room for the long vowel suffix.";
+                    }
+                } else {
+                    // All other perfect: replace -ah with -iy
+                    this.letts.splice(3, 2, "ִי");
+                    rule = "This form, like most perfect forms, replaces the qamets-hey with a chireq-yod.";
+                }
+            } else {
+                // Imperfect forms
+                lesson = "15.7";
+                if ([
+                    "וּ",
+                    "ִי"
+                ].includes(suffix)) {
+                    // long vowel suffix: remove -ah
+                    this.letts.splice(3, 2);
+                    rule = "This form loses the segol-hey entirely "
+                    + "to make room for the long vowel suffix.";
+                    lesson = "15.6-7";
+        } else if (suffix == "ְנָה") {
+                    // 3fp, 2fp: replace -ah with -ey
+                    this.letts.splice(3, 2, "ֶי");
+                    rule = "The 3fp and 2fp forms replace the segol-hey with a segol-yod.";
+                }
+            }
+            if (rule) rules.push([
+                "III Hey",
+                rule,
+                lesson,
+            ])
+        }
+
+        // Add a dagesh to a suffix with tav or nun,
+        // but not for III Hey and III Alef roots
+        if (suffix && [
+            "ת",
+            "נ"
+        ].includes(suffix[1])) {
+            if ([
+                "א",
+                "ה"
+            ].includes(this.root[2])) {
+                let rule, lesson;
+
+                suffix = suffix.slice(1);
+                rule = "Since the suffix follows a vowel";
+                if (this.weaknesses.includes("III Alef")) {
+                    rule += " (the alef is silent)";
+                    lesson = this.perfect ? "14.8" : "14.9";
+                } else {
+                    lesson = "15.6";
+                }
+                if (suffix[0] == "ת") {
+                    rule += ", we do not add a dagesh to the tav or a sheva ";
+                    if (suffix[1] == SHEVA) {
+                        suffix = suffix.slice(0, -1);
+                        rule += "before or after it.";
+                    } else {
+                        rule += "before it.";
+                    }
+                } else {
+                    rule += ", we do not add a sheva before the nun.";
+                    lesson = "see " + lesson;
+                }
+
+                rules.push([
+                    "",
+                    rule,
+                    lesson,
+                ]);
+            } else {
+                suffix = suffix.slice(0, 2) + DAGESH + suffix.slice(2);
+            }
+        }
 
         this.baseForm = this.letts.slice();
 
@@ -475,7 +587,7 @@ export class Verb {
             "Adding affixes",
             before,
             this.hb.span(this.str),
-            description,
+            ...rules,
         );
 
         return this;
