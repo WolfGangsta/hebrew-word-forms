@@ -243,8 +243,6 @@ export class Verb {
     // Conjugate a Hebrew word form
     conjugate(perf, pers, sing, masc) {
 
-        // TODO: Define these functions
-
         // Don't try to conjugate unknown weaknesses
         if (this.weaknesses.includes("II Guttural")
             || this.weaknesses.includes("Hollow")
