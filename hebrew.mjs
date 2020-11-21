@@ -97,6 +97,7 @@ export class Hebrew {
 
         let root = this.lettersOf(rootStr);
 
+        // I
         if (this.letters.isGuttural(root[0])) {
             weaknesses.push("I Guttural");
         } else if (root[0] == "נ") {
@@ -105,14 +106,18 @@ export class Hebrew {
             weaknesses.push("I Yod");
         }
 
+        // II
         if (this.letters.isGuttural(root[1])) {
             weaknesses.push("II Guttural");
         }
 
+        // III
         if (root[2] == "א") {
             weaknesses.push("III Alef");
         } else if (root[2] == "ה") {
             weaknesses.push("III Hey");
+        } else if (this.letters.isGuttural(root[2])) {
+            weaknesses.push("III Guttural");
         }
 
         if (weaknesses.length == 0) weaknesses.push("Strong");
@@ -242,9 +247,11 @@ export class Verb {
 
         // Don't try to conjugate unknown weaknesses
         if (this.weaknesses.includes("II Guttural")
-            || this.weaknesses.includes("I Yod")
             || this.weaknesses.includes("Hollow")
-            || this.weaknesses.includes("Geminate"))
+            || this.weaknesses.includes("Geminate")
+            || (!this.perfect
+                && (this.weaknesses.includes("I Yod")
+                    || this.weaknesses.includes("I Alef"))))
         {
             this.addStep(
                 "Ummm...",
@@ -826,12 +833,16 @@ export class Verb {
     // Return the theme vowel of the root
     themeVowel() {
         // III Hey
-        if (this.root[2] == "ה")
+        if (this.weaknesses.includes("III Hey"))
             return SEGOL;
 
+        // III Alef
+        if (this.weaknesses.includes("III Alef"))
+            return QAMETS;
+
         // Guttural II, Guttural III (?)
-        if (this.l.isGuttural(this.root[1])
-            || this.l.isGuttural(this.root[2]))
+        if (this.weaknesses.includes("II Guttural")
+            || this.weaknesses.includes("III Guttural"))
             return PATACH;
 
         // I Yod (Vav)
