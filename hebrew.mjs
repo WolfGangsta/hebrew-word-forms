@@ -186,6 +186,14 @@ export class Verb {
      * @param {String} str
      */
     get str() {
+        return this.letts.join("");
+    }
+
+    set str(str) {
+        this.letts = this.hb.lettersOf(str);
+    }
+
+    toString() {
         let letts = this.letts.slice();
 
         // Change the last letter to its final form,
@@ -205,14 +213,6 @@ export class Verb {
         }
 
         return letts.join("");
-    }
-
-    set str(str) {
-        this.letts = this.hb.lettersOf(str);
-    }
-
-    toString() {
-        return this.str;
     }
 
     // Translate the verb to its English meaning(s)
@@ -338,7 +338,7 @@ export class Verb {
     }
 
     createBaseForm() {
-        let before = this.hb.span(this.str);
+        let before = this.hb.span(this.toString());
         let rules = [];
 
         let description = (
@@ -422,7 +422,7 @@ export class Verb {
         this.addStep(
             "Creating the base form",
             before,
-            this.hb.span(this.str),
+            this.hb.span(this.toString()),
             ...rules,
         );
 
@@ -431,7 +431,7 @@ export class Verb {
     }
 
     addAffixes() {
-        let before = this.hb.span(this.str);
+        let before = this.hb.span(this.toString());
         let rules = [];
 
         let form = this.hb.paradigms.qal
@@ -586,7 +586,7 @@ export class Verb {
         this.addStep(
             "Adding affixes",
             before,
-            this.hb.span(this.str),
+            this.hb.span(this.toString()),
             ...rules,
         );
 
@@ -597,7 +597,7 @@ export class Verb {
         if (this.weaknesses.includes("I Guttural")
             && this.baseForm[1] == SHEVA)
         {
-            let before = this.hb.span(this.str);
+            let before = this.hb.span(this.toString());
 
             let description =
                 "Gutturals such as "
@@ -640,7 +640,7 @@ export class Verb {
             this.addStep(
                 "I Guttural: \"a\" attraction",
                 before,
-                this.hb.span(this.str),
+                this.hb.span(this.toString()),
                 description,
             );
         }
@@ -651,7 +651,7 @@ export class Verb {
     applyINun() {
         if (this.root[0] == "נ" && !this.perfect) {
             // Record state of word beforehand
-            let before = this.hb.span(this.str);
+            let before = this.hb.span(this.toString());
 
             // Find the nun
             for (let i = 1; i < this.letts.length - 1; i++) {
@@ -669,7 +669,7 @@ export class Verb {
             this.addStep(
                 "I Nun",
                 before,
-                this.hb.span(this.str),
+                this.hb.span(this.toString()),
                 "This root is a I Nun root; in the imperfect paradigm, the "
                 + "nun is assimilated into the next consonant as a strong dagesh.",
             );
@@ -681,7 +681,7 @@ export class Verb {
     applyLQCH() {
         if (this.root.join("") == "לקח" && !this.perfect) {
             // Record state of word beforehand
-            let before = this.hb.span(this.str);
+            let before = this.hb.span(this.toString());
 
             // Find the nun
             for (let i = 0; i < this.letts.length - 1; i++) {
@@ -699,7 +699,7 @@ export class Verb {
             this.addStep(
                 "Irregular root: לקח",
                 before,
-                this.hb.span(this.str),
+                this.hb.span(this.toString()),
                 "This root is irregular; in the imperfect paradigm, the "
                 + "lamed is assimilated into the next consonant as a strong dagesh.",
             );
@@ -710,7 +710,7 @@ export class Verb {
 
     assimilateNun() {
         // Record state of word beforehand
-        let before = this.hb.span(this.str);
+        let before = this.hb.span(this.toString());
 
         let nunFound = false;
 
@@ -733,7 +733,7 @@ export class Verb {
         if (nunFound) this.addStep(
             "Nun assimilation",
             before,
-            this.hb.span(this.str),
+            this.hb.span(this.toString()),
             "This word has a double nun, which is spelled with a dagesh.",
         );
 
@@ -743,7 +743,7 @@ export class Verb {
     // Add weak dageshes where necessary.
     finalize() {
         // Record state of word beforehand
-        let before = this.hb.span(this.str);
+        let before = this.hb.span(this.toString());
         let description = [];
 
         // Add weak dageshes where applicable
@@ -815,7 +815,7 @@ export class Verb {
         if (description.length > 0 ) this.addStep(
             "Last steps",
             before,
-            this.hb.span(this.str),
+            this.hb.span(this.toString()),
             "Finally, we " + description.join(" and ") + ".",
         );
 

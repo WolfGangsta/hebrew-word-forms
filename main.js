@@ -72,7 +72,7 @@ function showForm(root, perfect, person, singular, masculine) {
     let summary = document.createElement("summary");
 
     let p = document.createElement("p");
-    let h = hebrew.span(word.str);
+    let h = hebrew.span(word.toString());
     p.append(h, ": " + transl);
 
     summary.append(p);
