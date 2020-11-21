@@ -536,8 +536,9 @@ export class Verb {
             ])
         }
 
-        // Add a dagesh to a suffix with tav or nun,
-        // but not for III Hey and III Alef roots
+        // Add a dagesh to a tav suffix,
+        // but not for III Hey and III Alef roots.
+        // For those, remove shevas from tav and nun suffixes.
         if (suffix && [
             "ת",
             "נ"
@@ -574,7 +575,7 @@ export class Verb {
                     rule,
                     lesson,
                 ]);
-            } else {
+            } else if (suffix[1] == "ת") {
                 suffix = suffix.slice(0, 2) + DAGESH + suffix.slice(2);
             }
         }
