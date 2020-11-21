@@ -712,7 +712,20 @@ export class Verb {
 
     // Return the theme vowel of the root
     themeVowel() {
-        if (this.l.isGuttural(this.root[2])) return PATACH;
+        // III Hey
+        if (this.root[2] == "ה")
+            return SEGOL;
+
+        // Guttural II, Guttural III (?)
+        if (this.l.isGuttural(this.root[1])
+            || this.l.isGuttural(this.root[2]))
+            return PATACH;
+
+        // I Yod (Vav)
+        if (this.root[0] == "י"
+            && true)
+            return TSERE;
+
         return CHOLEM;
     }
 }
