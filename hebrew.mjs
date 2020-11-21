@@ -88,12 +88,14 @@ export class Hebrew {
     }
 
     // Find a root's weak parts
-    weaknesses(root) {
+    weaknesses(rootStr) {
         let weaknesses = [];
 
-        if (root == "לקח") {
+        if (rootStr == "לקח") {
             weaknesses.push("Irregular");
         }
+
+        let root = this.lettersOf(rootStr);
 
         if (this.letters.isGuttural(root[0])) {
             weaknesses.push("I Guttural");
