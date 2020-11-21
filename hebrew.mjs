@@ -163,6 +163,8 @@ export class Hebrew {
 export class Verb {
     constructor(hb, rootStr, perf, pers, sing, masc) {
         this.hb = hb;
+        this.l = hb.letters;
+
         this.root = hb.lettersOf(rootStr);
         this.weaknesses = hb.weaknesses(rootStr);
         this.letts = this.root.slice();
@@ -185,12 +187,12 @@ export class Verb {
         // if applicable
         for (let i = letts.length - 1; i >= 0; i--) {
             let letter = letts[i];
-            if (this.hb.letters.isConsonant(letter)
-                || (this.hb.letters.isVowel(letter)
-                    && this.hb.letters.isLong(letter)))
+            if (this.l.isConsonant(letter)
+                || (this.l.isVowel(letter)
+                    && this.l.isLong(letter)))
             {
-                if (this.hb.letters.hasFinalForm(letter)) {
-                    let replacement = this.hb.letters.finalForm(letter);
+                if (this.l.hasFinalForm(letter)) {
+                    let replacement = this.l.finalForm(letter);
                     letts.splice(i, 1, replacement);
                 }
                 break;
@@ -362,7 +364,7 @@ export class Verb {
 
         if (this.letts[4] == "א" || this.letts[4] == "ה") {
             this.letts[3] = QAMETS;
-            let weakLetter = this.hb.letters.name(this.letts[4]);
+            let weakLetter = this.l.name(this.letts[4]);
 
             let description = (
                 "The "
@@ -420,7 +422,7 @@ export class Verb {
         ].includes(suffix)) {
             description += (
                 " and shortening the "
-                + this.hb.letters.name(this.letts[3])
+                + this.l.name(this.letts[3])
                 + " into a sheva"
             );
             this.letts[3] = SHEVA;
@@ -430,7 +432,7 @@ export class Verb {
         ].includes(suffix)) {
             description += (
                 " and shortening the "
-                + this.hb.letters.name(this.letts[1])
+                + this.l.name(this.letts[1])
                 + " into a sheva"
             );
             this.letts[1] = SHEVA;
@@ -464,7 +466,7 @@ export class Verb {
 
             let description =
                 "Gutturals such as "
-                + this.hb.letters.name(this.root[0])
+                + this.l.name(this.root[0])
                 + " can't take a sheva. ";
 
             if (!this.perfect) {
@@ -612,7 +614,7 @@ export class Verb {
         // Add weak dageshes where applicable
         let changed = false;
         /* for (let i = 0; i < this.letts.length; i++) {
-            if (this.hb.letters.isBegadkefat(this.letts[i])
+            if (this.l.isBegadkefat(this.letts[i])
                 && this.letts[i + 1] != DAGESH)
             {
                 // If this isn't the first letter, we need to make sure
@@ -643,8 +645,8 @@ export class Verb {
                             }
 
                             // Short and silent
-                            if (!this.hb.letters.isVowel(lastLastLetter)
-                                || !this.hb.letters.isShort(lastLastLetter))
+                            if (!this.l.isVowel(lastLastLetter)
+                                || !this.l.isShort(lastLastLetter))
                             {
                                 // It's vocal. No dagesh.
                                 continue;
@@ -655,7 +657,7 @@ export class Verb {
                         }
                     } else {
                         // Non-sheva vowels are vocal. No dagesh.
-                        if (this.hb.letters.isVowel(lastLetter))
+                        if (this.l.isVowel(lastLetter))
                             continue;
                     }
                 }
@@ -666,7 +668,7 @@ export class Verb {
                 i++;
             }
         } */
-        if (this.hb.letters.isBegadkefat(this.letts[0])
+        if (this.l.isBegadkefat(this.letts[0])
             && !this.letts[1] != DAGESH) {
             this.letts.splice(1, 0, DAGESH);
             changed = true;
@@ -687,7 +689,7 @@ export class Verb {
 
     // Return the theme vowel of the root
     themeVowel() {
-        if (this.hb.letters.isGuttural(this.root[2])) return PATACH;
+        if (this.l.isGuttural(this.root[2])) return PATACH;
         return CHOLEM;
     }
 }
