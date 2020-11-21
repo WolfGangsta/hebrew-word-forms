@@ -312,5 +312,12 @@
             ["see", "saw"],
             ["know", "knew"]
         ]
+    },
+    {
+        "lesson": 17,
+        "root": "יטב",
+        "translations": [
+            "be good"
+        ]
     }
 ]
