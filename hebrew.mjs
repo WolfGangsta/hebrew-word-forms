@@ -164,6 +164,7 @@ export class Verb {
     constructor(hb, rootStr, perf, pers, sing, masc) {
         this.hb = hb;
         this.root = hb.lettersOf(rootStr);
+        this.weaknesses = hb.weaknesses(rootStr);
         this.letts = this.root.slice();
 
         this.perfect = perf;
@@ -238,11 +239,10 @@ export class Verb {
         // TODO: Define these functions
 
         // Don't try to conjugate unknown weaknesses
-        let weaknesses = this.hb.weaknesses(this.root);
-        if (weaknesses.includes("II Guttural")
-            || weaknesses.includes("I Yod")
-            || weaknesses.includes("Hollow")
-            || weaknesses.includes("Geminate"))
+        if (this.weaknesses.includes("II Guttural")
+            || this.weaknesses.includes("I Yod")
+            || this.weaknesses.includes("Hollow")
+            || this.weaknesses.includes("Geminate"))
         {
             this.addSummary(
                 "Ummm...",
@@ -457,8 +457,9 @@ export class Verb {
     }
 
     applyIGuttural() {
-        if (this.hb.letters.isGuttural(this.root[0]) // TODO: Use actual "I Guttural" weakness
-            && this.baseForm[1] == SHEVA) {
+        if (this.weaknesses.includes("I Guttural")
+            && this.baseForm[1] == SHEVA)
+        {
             let before = this.hb.span(this.str);
 
             let description =
