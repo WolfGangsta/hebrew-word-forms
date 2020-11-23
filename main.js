@@ -35,6 +35,7 @@ let promises = [
 let workArea = document.getElementById("workArea");
 
 let lessonDiv = document.getElementById("lessonDiv");
+
 let rootSelect = document.getElementById("root");
 let rootInfo = document.getElementById("rootInfo");
 rootSelect.addEventListener("input", function() {
@@ -49,8 +50,11 @@ let perfTab = document.getElementById("perfect");
 let impfTab = document.getElementById("imperfect");
 
 let testDiv = document.getElementById("testDiv");
+testDiv.style.display = "none";
 
 let vocabDiv = document.getElementById("vocabDiv");
+vocabDiv.style.display = "none";
+
 let vocabTable = document.createElement("table");
 vocabDiv.appendChild(vocabTable);
 
