@@ -462,12 +462,16 @@ export class Verb {
             "וּ",
             "ִי"
         ].includes(suffix)) {
-            description += (
-                " and shortening the "
-                + this.l.name(this.letts[3])
-                + " into a sheva"
-            );
-            this.letts[3] = SHEVA;
+            if (!this.weaknesses.includes("III Hey")
+                || suffix == "ָה")
+            {
+                description += (
+                    " and shortening the "
+                    + this.l.name(this.letts[3])
+                    + " into a sheva"
+                );
+                this.letts[3] = SHEVA;
+            }
         } else if ([
             "ְתֶמ",
             "ְתֶנ"
