@@ -429,7 +429,6 @@ export class Verb {
             ...rules,
         );
 
-        this.baseForm = this.letts.slice();
         return this;
     }
 
@@ -667,8 +666,6 @@ export class Verb {
                 suffix = suffix.slice(0, 2) + DAGESH + suffix.slice(2);
             }
         }
-
-        this.baseForm = this.letts.slice();
 
         this.str = prefix + this.str + suffix;
 
