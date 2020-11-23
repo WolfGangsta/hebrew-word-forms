@@ -401,8 +401,14 @@ export class Verb {
                 rule = "The theme vowel is patach, because gutturals attract the \"a\"-sound.";
             } else if (themeVowel == SEGOL) {
                 weakness = "III Hey";
-                rule = "The theme vowel is segol."
+                rule = "The theme vowel is segol.";
                 lesson = "see 15.7";
+            } else if (themeVowel == QAMETS) {
+                weakness = "III Alef";
+                rule = "The theme vowel, like a III Guttural, is \"a\"-class, "
+                    + "but it is a qamets instead of a patach "
+                    + "due to compensatory lengthening.";
+                lesson = "14.9";
             } else {
                 weakness = "Regular";
                 rule = "The theme vowel is cholem.";
@@ -538,7 +544,7 @@ export class Verb {
         }
 
         // III Hey
-        if (this.root[2] == "ה") {
+        if (this.weaknesses.includes("III Hey")) {
             let rule, lesson;
             if (this.perfect) {
                 // Perfect forms
@@ -591,46 +597,73 @@ export class Verb {
             ])
         }
 
-        // Add a dagesh to a tav suffix,
-        // but not for III Hey and III Alef roots.
-        // For those, remove shevas from tav and nun suffixes.
-        if (suffix && [
-            "ת",
-            "נ"
-        ].includes(suffix[1])) {
-            if ([
-                "א",
-                "ה"
-            ].includes(this.root[2])) {
-                let rule, lesson;
-
+        // III Alef, III Hey
+        if (this.weaknesses.includes("III Alef")
+            || this.weaknesses.includes("III Hey"))
+        {
+            if (suffix && [
+                "ת",
+                "נ"
+            ].includes(suffix[1])) {
+                // Remove sheva from tav or nun suffix
                 suffix = suffix.slice(1);
-                rule = "Since the suffix follows a vowel";
                 if (this.weaknesses.includes("III Alef")) {
-                    rule += " (the alef is silent)";
-                    lesson = this.perfect ? "14.8" : "14.9";
+                    rules.push([
+                        "III Alef",
+                        "When an alef closes a syllable, it is silent. "
+                        + "This means it cannot have a sheva.",
+                        "14.8"
+                    ]);
                 } else {
-                    lesson = "15.6";
+                    rules.push([
+                        "III Hey",
+                        "In this case, the yod is part of a vowel, "
+                        + "so it cannot take a sheva.",
+                        "15.5"
+                    ]);
                 }
+
+                // Explain no dagesh; remove
+                // trailing sheva from perf 2fs
                 if (suffix[0] == "ת") {
-                    rule += ", we do not add a dagesh to the tav or a sheva ";
+                    let rule, lesson;
+                    rule = "Since the suffix follows a vowel";
+                    if (this.weaknesses.includes("III Alef")) {
+                        lesson = this.perfect ? "14.8" : "14.9";
+                    } else {
+                        lesson = "15.6";
+                    }
+                    rule += ", we do not add a dagesh to the tav"
                     if (suffix[1] == SHEVA) {
                         suffix = suffix.slice(0, -1);
-                        rule += "before or after it.";
+                        rule += " or a sheva after it.";
                     } else {
-                        rule += "before it.";
+                        rule += ".";
                     }
-                } else {
-                    rule += ", we do not add a sheva before the nun.";
-                    lesson = "see " + lesson;
+                    rules.push([
+                        "",
+                        rule,
+                        lesson,
+                    ]);
                 }
 
-                rules.push([
-                    "",
-                    rule,
-                    lesson,
-                ]);
-            } else if (suffix[1] == "ת") {
+                // III Alef: segol in impf 3fp, 2fp
+                if (this.weaknesses.includes("III Alef")
+                    && suffix == "נָה")
+                {
+                    this.letts[3] = SEGOL;
+                    rules.push([
+                        "III Alef",
+                        "In the imperfect 3fp and 2fp form, "
+                        + "the vowel before the alef is segol.",
+                        "14.9"
+                    ])
+                }
+            }
+        } else {
+            // Add a dagesh to a tav suffix,
+            // in non- III Hey and III Alef roots.
+            if (suffix && suffix[1] == "ת") {
                 suffix = suffix.slice(0, 2) + DAGESH + suffix.slice(2);
             }
         }
