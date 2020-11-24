@@ -859,6 +859,9 @@ export class Verb {
 
     // Return the theme vowel of the root
     themeVowel() {
+        // Override
+        if (this.themeVowelOverride) return this.themeVowelOverride;
+
         // III Hey
         if (this.weaknesses.includes("III Hey"))
             return SEGOL;
@@ -877,6 +880,7 @@ export class Verb {
             && true)
             return TSERE;
 
+        // Regular
         return CHOLEM;
     }
 }

@@ -1,4 +1,5 @@
 import { Hebrew, Verb } from "./hebrew.mjs";
+import { Test } from "./test.mjs";
 
 let hebrew;
 
@@ -51,6 +52,8 @@ let impfTab = document.getElementById("imperfect");
 
 let testDiv = document.getElementById("testDiv");
 testDiv.style.display = "none";
+let questionDiv = document.getElementById("questionDiv");
+let answerDiv = document.getElementById("answerDiv");
 
 let vocabDiv = document.getElementById("vocabDiv");
 vocabDiv.style.display = "none";
@@ -132,26 +135,29 @@ function showTab(id) {
 function main() {
     hebrew = new Hebrew(letterInfo, vocabulary, paradigms);
 
-    // let wordList = hebrew.wordList;
-    let wordList = [
-        "קטל", // Strong
-        "עמד", // I Guttural
-        // "רחצ", // II Guttural
-        "שׁלח", // III Guttural (not technically a model verb)
-        "נפל", // I Nun
-        "יטב", // I Yod
-        "ישׁב", // I Yod
-        "גלה", // III Hey
-        "מצא", // III Alef
-        // "קומ", // Hollow
-        // "סבב", // Geminate
-        "אכל", // I Alef
-    ];
+    let wordList = hebrew.wordList;
+    // let wordList = [
+    //     "קטל", // Strong
+    //     "עמד", // I Guttural
+    //     // "רחצ", // II Guttural
+    //     "שׁלח", // III Guttural (not technically a model verb)
+    //     "נפל", // I Nun
+    //     "יטב", // I Yod
+    //     "ישׁב", // I Yod
+    //     "גלה", // III Hey
+    //     "מצא", // III Alef
+    //     // "קומ", // Hollow
+    //     // "סבב", // Geminate
+    //     "אכל", // I Alef
+    // ];
     for (let root of wordList) {
         let opt = document.createElement("option");
         opt.text = root;
         rootSelect.appendChild(opt);
     }
+
+    // Initiate test
+    let test = new Test(hebrew, questionDiv, answerDiv);
 
     // Populate word list
     for (let root of hebrew.wordList) {
