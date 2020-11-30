@@ -173,13 +173,6 @@
     },
     {
         "lesson": 12,
-        "root": "גאל",
-        "translations": [
-            "redeem", "claim"
-        ]
-    },
-    {
-        "lesson": 12,
         "root": "חזק",
         "translations": [
             "be strong", "be courageous"

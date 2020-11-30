@@ -42,7 +42,7 @@ let rootInfo = document.getElementById("rootInfo");
 rootSelect.addEventListener("input", function() {
     let root = this.selectedOptions[0].innerText;
     if (root != "") {
-        let weaknesses = hebrew.weaknesses(hebrew.lettersOf(root));
+        let weaknesses = hebrew.makeReadable(hebrew.weaknesses(hebrew.lettersOf(root)));
         rootInfo.innerText = weaknesses.join(", ");
         showWord(root);
     }
@@ -151,21 +151,21 @@ function showTab(id) {
 function main() {
     hebrew = new Hebrew(letterInfo, vocabulary, paradigms);
 
-    // let wordList = hebrew.wordList;
-    let wordList = [
-        "קטל", // Strong
-        "עמד", // I Guttural
-        // "רחצ", // II Guttural
-        "שׁלח", // III Guttural (not technically a model verb)
-        "נפל", // I Nun
-        "יטב", // I Yod
-        "ישׁב", // I Yod
-        "גלה", // III Hey
-        "מצא", // III Alef
-        // "קומ", // Hollow
-        // "סבב", // Geminate
-        "אכל", // I Alef
-    ];
+    let wordList = hebrew.wordList;
+    // let wordList = [
+    //     "קטל", // Strong
+    //     "עמד", // I Guttural
+    //     // "רחצ", // II Guttural
+    //     "שׁלח", // III Guttural (not technically a model verb)
+    //     "נפל", // I Nun
+    //     "יטב", // I Yod
+    //     "ישׁב", // I Yod
+    //     "גלה", // III Hey
+    //     "מצא", // III Alef
+    //     // "קומ", // Hollow
+    //     // "סבב", // Geminate
+    //     "אכל", // I Alef
+    // ];
     for (let root of wordList) {
         let opt = document.createElement("option");
         opt.text = root;

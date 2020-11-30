@@ -134,6 +134,21 @@ export class Hebrew {
         return weaknesses;
     }
 
+    makeReadable(weaknesses) {
+        let readable = [];
+        if (weaknesses[IRREGULAR])
+            readable.push("Irregular");
+        if (weaknesses[I])
+            readable.push("I " + weaknesses[I]);
+        if (weaknesses[II])
+            readable.push("II " + weaknesses[II]);
+        if (weaknesses[III])
+            readable.push("III " + weaknesses[III]);
+        if (readable.length == 0)
+            readable.push("Regular");
+        return readable;
+    }
+
     // Translate a root to its English meaning(s)
     translateRoot(root, past, singular, firstPerson) {
         let translations = [];
@@ -181,6 +196,7 @@ export class Verb {
 
         this.root = hb.lettersOf(rootStr);
         this.weaknesses = hb.weaknesses(rootStr);
+        this.readableWeaknesses = hb.makeReadable(this.weaknesses);
         this.letts = this.root.slice();
 
         this.perfect = perf;
@@ -258,13 +274,14 @@ export class Verb {
             || this.weaknesses[GEMINATE]
             || (!this.perfect
                 && (this.weaknesses[I] == "Yod"
-                    || this.weaknesses[I] == "Alef")))
+                    || this.weaknesses[I] == "Alef"
+                    || this.root == "הלכ")))
         {
             this.addStep(
                 "Ummm...",
                 ":(",
                 ":(",
-                "This root has irregularities I haven't studied yet--it shouldn't be in this list.",
+                "This root has irregularities that aren't supported yet. Sorry!",
             )
             return this;
         }
