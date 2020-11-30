@@ -3,9 +3,17 @@ import {
     DAGESH, SHEVA,
     CHATEF_PATACH, CHATEF_SEGOL,
     PATACH, SEGOL,
-    QAMETS, CHOLEM
+    QAMETS, TSERE, CHOLEM
 } from "./letters.mjs";
 import * as English from "./english.mjs";
+
+export const
+    IRREGULAR = 0,
+    I = 1,
+    II = 2,
+    III = 3,
+    HOLLOW = 4,
+    GEMINATE = 5;
 
 // TODO: Catalog the rest of the verb root vocabulary
 
@@ -90,37 +98,38 @@ export class Hebrew {
     // Find a root's weak parts
     weaknesses(rootStr) {
         let weaknesses = [];
+        weaknesses.length = 4;
 
         if (rootStr == "לקח") {
-            weaknesses.push("Irregular");
+            weaknesses[IRREGULAR] = true;
         }
 
         let root = this.lettersOf(rootStr);
 
         // I
-        if (this.letters.isGuttural(root[0])) {
-            weaknesses.push("I Guttural");
+        if (root[0] == "א") {
+            weaknesses[I] = "Alef";
+        } else if (this.letters.isGuttural(root[0])) {
+            weaknesses[I] = "Guttural";
         } else if (root[0] == "נ") {
-            weaknesses.push("I Nun");
+            weaknesses[I] = "Nun";
         } else if (root[0] == "י") {
-            weaknesses.push("I Yod");
+            weaknesses[I] = "Yod";
         }
 
         // II
         if (this.letters.isGuttural(root[1])) {
-            weaknesses.push("II Guttural");
+            weaknesses[II] = "Guttural";
         }
 
         // III
         if (root[2] == "א") {
-            weaknesses.push("III Alef");
+            weaknesses[III] = "Alef";
         } else if (root[2] == "ה") {
-            weaknesses.push("III Hey");
+            weaknesses[III] = "Hey";
         } else if (this.letters.isGuttural(root[2])) {
-            weaknesses.push("III Guttural");
+            weaknesses[III] = "Guttural";
         }
-
-        if (weaknesses.length == 0) weaknesses.push("Strong");
 
         return weaknesses;
     }
@@ -244,12 +253,12 @@ export class Verb {
     conjugate(perf, pers, sing, masc) {
 
         // Don't try to conjugate unknown weaknesses
-        if (this.weaknesses.includes("II Guttural")
-            || this.weaknesses.includes("Hollow")
-            || this.weaknesses.includes("Geminate")
+        if (this.weaknesses[II] == "Guttural"
+            || this.weaknesses[HOLLOW]
+            || this.weaknesses[GEMINATE]
             || (!this.perfect
-                && (this.weaknesses.includes("I Yod")
-                    || this.weaknesses.includes("I Alef"))))
+                && (this.weaknesses[I] == "Yod"
+                    || this.weaknesses[I] == "Alef")))
         {
             this.addStep(
                 "Ummm...",
@@ -354,8 +363,8 @@ export class Verb {
             description += "qamets and patach.";
 
             // III Alef & III Hey
-            if (this.weaknesses.includes("III Alef")
-                || this.weaknesses.includes("III Hey"))
+            if (this.weaknesses[III] == "Alef"
+                || this.weaknesses[III] == "Hey")
             {
                 this.letts[3] = QAMETS;
 
@@ -386,8 +395,8 @@ export class Verb {
 
             let weakness, rule, lesson;
             if (themeVowel == PATACH) {
-                if (this.weaknesses.includes("II Guttural")) {
-                    if (this.weaknesses.includes("III Guttural")) {
+                if (this.weaknesses[II] == "Guttural") {
+                    if (this.weaknesses[III] == "Guttural") {
                         weakness = "II/III Guttural";
                         lesson = "11.4, ???"; // TODO: Find ???
                     } else {
@@ -462,7 +471,7 @@ export class Verb {
             "וּ",
             "ִי"
         ].includes(suffix)) {
-            if (!this.weaknesses.includes("III Hey")
+            if (!this.weaknesses[III] == "Hey"
                 || suffix == "ָה")
             {
                 description += (
@@ -488,7 +497,7 @@ export class Verb {
         rules.push(description);
 
         // I Guttural
-        if (this.weaknesses.includes("I Guttural")
+        if (this.weaknesses[I] == "Guttural"
             && this.letts[1] == SHEVA)
         {
             let desc, lesson;
@@ -547,7 +556,7 @@ export class Verb {
         }
 
         // III Hey
-        if (this.weaknesses.includes("III Hey")) {
+        if (this.weaknesses[III] == "Hey") {
             let rule, lesson;
             if (this.perfect) {
                 // Perfect forms
@@ -601,8 +610,8 @@ export class Verb {
         }
 
         // III Alef, III Hey
-        if (this.weaknesses.includes("III Alef")
-            || this.weaknesses.includes("III Hey"))
+        if (this.weaknesses[III] == "Alef"
+            || this.weaknesses[III] == "Hey")
         {
             if (suffix && [
                 "ת",
@@ -610,7 +619,7 @@ export class Verb {
             ].includes(suffix[1])) {
                 // Remove sheva from tav or nun suffix
                 suffix = suffix.slice(1);
-                if (this.weaknesses.includes("III Alef")) {
+                if (this.weaknesses[III] == "Alef") {
                     rules.push([
                         "III Alef",
                         "When an alef closes a syllable, it is silent. "
@@ -631,7 +640,7 @@ export class Verb {
                 if (suffix[0] == "ת") {
                     let rule, lesson;
                     rule = "Since the suffix follows a vowel";
-                    if (this.weaknesses.includes("III Alef")) {
+                    if (this.weaknesses[III] == "Alef") {
                         lesson = this.perfect ? "14.8" : "14.9";
                     } else {
                         lesson = "15.6";
@@ -651,7 +660,7 @@ export class Verb {
                 }
 
                 // III Alef: segol in impf 3fp, 2fp
-                if (this.weaknesses.includes("III Alef")
+                if (this.weaknesses[III] == "Alef"
                     && suffix == "נָה")
                 {
                     this.letts[3] = SEGOL;
@@ -863,20 +872,20 @@ export class Verb {
         if (this.themeVowelOverride) return this.themeVowelOverride;
 
         // III Hey
-        if (this.weaknesses.includes("III Hey"))
+        if (this.weaknesses[III] == "Hey")
             return SEGOL;
 
         // III Alef
-        if (this.weaknesses.includes("III Alef"))
+        if (this.weaknesses[III] == "Alef")
             return QAMETS;
 
         // Guttural II, Guttural III (?)
-        if (this.weaknesses.includes("II Guttural")
-            || this.weaknesses.includes("III Guttural"))
+        if (this.weaknesses[II] == "Guttural"
+            || this.weaknesses[III] == "Guttural")
             return PATACH;
 
         // I Yod (Vav)
-        if (this.root[0] == "י"
+        if (this.weaknesses[I] == "Yod"
             && true)
             return TSERE;
 

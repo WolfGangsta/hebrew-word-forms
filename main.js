@@ -1,4 +1,4 @@
-import { Hebrew, Verb } from "./hebrew.mjs";
+import { Hebrew, Verb, I } from "./hebrew.mjs";
 import { Test } from "./test.mjs";
 
 let hebrew;
@@ -54,6 +54,7 @@ let testDiv = document.getElementById("testDiv");
 testDiv.style.display = "none";
 let questionDiv = document.getElementById("questionDiv");
 let answerDiv = document.getElementById("answerDiv");
+let testForm = document.getElementById("testForm");
 
 let vocabDiv = document.getElementById("vocabDiv");
 vocabDiv.style.display = "none";
@@ -99,26 +100,41 @@ function showWord(root) {
             tbody.removeChild(tbody.children[0]);
         }
 
-        for (let person = 3; person >= 1; person--) {
-            for (let masc = 1; masc >= 0; masc--) {
-                let tr = document.createElement("tr");
-                tr.className = masc ? "m" : "f";
-                for (let sing = 1; sing >= 0; sing--) {
-                    let td = document.createElement("td");
-                    td.appendChild(showForm(root, perf, person, sing, masc));
-                    if (person == 1
-                        || (person == 3 && perf && !sing))
-                    {
-                        if (masc) {
-                            td.rowSpan = 2;
-                            td.className = "c";
-                        } else {
-                            continue;
+        let word = new Verb(hebrew, root);
+        if (!perf && (
+            ["Yod", "Alef"].includes(word.weaknesses[I])
+        )) {
+            let tr = document.createElement("tr");
+            let td = document.createElement("td");
+            td.colSpan = 2;
+            td.innerText =
+                "Sorry! I "
+                + word.weaknesses[I]
+                + " roots aren't supported in the imperfect.";
+            tr.append(td);
+            tbody.appendChild(tr);
+        } else {
+            for (let person = 3; person >= 1; person--) {
+                for (let masc = 1; masc >= 0; masc--) {
+                    let tr = document.createElement("tr");
+                    tr.className = masc ? "m" : "f";
+                    for (let sing = 1; sing >= 0; sing--) {
+                        let td = document.createElement("td");
+                        td.appendChild(showForm(root, perf, person, sing, masc));
+                        if (person == 1
+                            || (person == 3 && perf && !sing))
+                        {
+                            if (masc) {
+                                td.rowSpan = 2;
+                                td.className = "c";
+                            } else {
+                                continue;
+                            }
                         }
+                        tr.appendChild(td);
                     }
-                    tr.appendChild(td);
+                    tbody.appendChild(tr);
                 }
-                tbody.appendChild(tr);
             }
         }
     }
@@ -135,21 +151,21 @@ function showTab(id) {
 function main() {
     hebrew = new Hebrew(letterInfo, vocabulary, paradigms);
 
-    let wordList = hebrew.wordList;
-    // let wordList = [
-    //     "קטל", // Strong
-    //     "עמד", // I Guttural
-    //     // "רחצ", // II Guttural
-    //     "שׁלח", // III Guttural (not technically a model verb)
-    //     "נפל", // I Nun
-    //     "יטב", // I Yod
-    //     "ישׁב", // I Yod
-    //     "גלה", // III Hey
-    //     "מצא", // III Alef
-    //     // "קומ", // Hollow
-    //     // "סבב", // Geminate
-    //     "אכל", // I Alef
-    // ];
+    // let wordList = hebrew.wordList;
+    let wordList = [
+        "קטל", // Strong
+        "עמד", // I Guttural
+        // "רחצ", // II Guttural
+        "שׁלח", // III Guttural (not technically a model verb)
+        "נפל", // I Nun
+        "יטב", // I Yod
+        "ישׁב", // I Yod
+        "גלה", // III Hey
+        "מצא", // III Alef
+        // "קומ", // Hollow
+        // "סבב", // Geminate
+        "אכל", // I Alef
+    ];
     for (let root of wordList) {
         let opt = document.createElement("option");
         opt.text = root;
@@ -157,7 +173,8 @@ function main() {
     }
 
     // Initiate test
-    let test = new Test(hebrew, questionDiv, answerDiv);
+    let test = new Test(hebrew, wordList, testForm, questionDiv, answerDiv, feedbackDiv);
+    test.newQuestion();
 
     // Populate word list
     for (let root of hebrew.wordList) {

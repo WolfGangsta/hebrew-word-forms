@@ -43,3 +43,11 @@ table {
 .hebrewText {
     font-size: 36px;
 }
+
+.incorrect {
+    background-color: tomato;
+}
+
+.correct {
+    background-color: lightgreen;
+}
