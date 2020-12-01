@@ -30,6 +30,7 @@
     {
         "lesson": 5,
         "root": "הלכ",
+        "irregular": "I Yod (Vav)",
         "translations": [
             "walk", ["go", "went"]
         ]
@@ -37,6 +38,7 @@
     {
         "lesson": 5,
         "root": "לקח",
+        "irregular": "I Nun",
         "translations": [
             ["take", "took"], "seize"
         ]
@@ -44,6 +46,7 @@
     {
         "lesson": 5,
         "root": "נתנ",
+        "themeVowel": "ֵ",
         "translations": [
             ["give", "gave"], "present"
         ]

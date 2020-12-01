@@ -42,7 +42,7 @@ let rootInfo = document.getElementById("rootInfo");
 rootSelect.addEventListener("input", function() {
     let root = this.selectedOptions[0].innerText;
     if (root != "") {
-        let weaknesses = hebrew.makeReadable(hebrew.weaknesses(hebrew.lettersOf(root)));
+        let weaknesses = hebrew.makeReadable(hebrew.weaknesses(root));
         rootInfo.innerText = weaknesses.join(", ");
         showWord(root);
     }

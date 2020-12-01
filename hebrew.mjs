@@ -100,9 +100,7 @@ export class Hebrew {
         let weaknesses = [];
         weaknesses.length = 4;
 
-        if (rootStr == "לקח") {
-            weaknesses[IRREGULAR] = true;
-        }
+        weaknesses[IRREGULAR] = this.vocabulary[rootStr].irregular;
 
         let root = this.lettersOf(rootStr);
 
@@ -194,6 +192,7 @@ export class Verb {
         this.hb = hb;
         this.l = hb.letters;
 
+        this.rootStr = rootStr;
         this.root = hb.lettersOf(rootStr);
         this.weaknesses = hb.weaknesses(rootStr);
         this.readableWeaknesses = hb.makeReadable(this.weaknesses);
@@ -429,6 +428,11 @@ export class Verb {
                     + "but it is a qamets instead of a patach "
                     + "due to compensatory lengthening.";
                 lesson = "14.9";
+            } else if (themeVowel == TSERE) {
+                // TODO: acknowledge I Yod (Vav) instance of TSERE
+                weakness = "Irregular";
+                rule = "The theme vowel of נתנ, like a I Yod (Vav) root, is tsere.";
+                lesson = "box below 17.3";
             } else {
                 weakness = "Regular";
                 rule = "The theme vowel is cholem.";
@@ -694,7 +698,7 @@ export class Verb {
         // I Nun, Irregular לקח
         if ((
             this.weaknesses[I] == "Nun"
-            || this.root == "לקח"
+            || this.weaknesses[IRREGULAR] == "I Nun"
         ) && !this.perfect) {
             if (this.letts[1] == SHEVA) {
                 // Get rid of letter I
@@ -709,14 +713,15 @@ export class Verb {
                     "I Nun",
                     "In the imperfect paradigm, the "
                     + "nun is assimilated into the next consonant as a strong dagesh.",
-                    "???", // TODO
+                    "15.3",
                 ]);
             } else {
                 rules.push([
                     "Irregular",
                     "This root acts like a I Nun root; in the imperfect paradigm, the "
-                    + "lamed is assimilated into the next consonant as a strong dagesh.",
-                    "???", // TODO
+                    + this.l.name(this.root[0])
+                    + " is assimilated into the next consonant as a strong dagesh.",
+                    "15.4", // TODO: Do any other words act like לקח?
                 ]);
             }
         }
@@ -851,6 +856,10 @@ export class Verb {
     themeVowel() {
         // Override
         if (this.themeVowelOverride) return this.themeVowelOverride;
+
+        // Irregular
+        if (this.hb.vocabulary[this.rootStr].themeVowel)
+            return this.hb.vocabulary[this.rootStr].themeVowel;
 
         // III Hey
         if (this.weaknesses[III] == "Hey")
