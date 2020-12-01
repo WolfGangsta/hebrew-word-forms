@@ -199,12 +199,17 @@ export class Test {
 
     checkAnswer() {
         let answers = Array.from(this.answerDiv.children);
+
         let selectedAnswer = answers.find(
             element => element.children[0].children[0].checked
         );
+        // If no answer is selected, give up
+        if (!selectedAnswer) return;
+
         let correctAnswer = answers.find(
             element => element.children[0].children[0].value == "correct"
         );
+
         let selection = selectedAnswer.children[0].children[0].value;
 
         // Clear feedback
