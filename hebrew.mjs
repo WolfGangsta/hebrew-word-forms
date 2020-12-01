@@ -486,7 +486,7 @@ export class Verb {
             "וּ",
             "ִי"
         ].includes(suffix)) {
-            if (!this.weaknesses[III] == "Hey"
+            if (this.weaknesses[III] != "Hey"
                 || suffix == "ָה")
             {
                 description += (
