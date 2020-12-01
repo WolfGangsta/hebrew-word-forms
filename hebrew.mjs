@@ -292,12 +292,6 @@ export class Verb {
         // Add prefix and suffix
         this.addAffixes();
 
-        // I Nun 
-        this.applyINun();
-
-        // LQCH irregular root
-        this.applyLQCH();
-
         // Assimilate Nuns
         this.assimilateNun();
 
@@ -697,6 +691,36 @@ export class Verb {
             }
         }
 
+        // I Nun, Irregular לקח
+        if ((
+            this.weaknesses[I] == "Nun"
+            || this.root == "לקח"
+        ) && !this.perfect) {
+            if (this.letts[1] == SHEVA) {
+                // Get rid of letter I
+                this.letts.splice(0, 2);
+
+                // Add dagesh to letter II
+                this.letts.splice(1, 0, DAGESH);
+            }
+
+            if (this.weaknesses[I] == "Nun") {
+                rules.push([
+                    "I Nun",
+                    "In the imperfect paradigm, the "
+                    + "nun is assimilated into the next consonant as a strong dagesh.",
+                    "???", // TODO
+                ]);
+            } else {
+                rules.push([
+                    "Irregular",
+                    "This root acts like a I Nun root; in the imperfect paradigm, the "
+                    + "lamed is assimilated into the next consonant as a strong dagesh.",
+                    "???", // TODO
+                ]);
+            }
+        }
+
         this.str = prefix + this.str + suffix;
 
         this.addStep(
@@ -705,66 +729,6 @@ export class Verb {
             this.hb.span(this.toString()),
             ...rules,
         );
-
-        return this;
-    }
-
-    applyINun() {
-        if (this.root[0] == "נ" && !this.perfect) {
-            // Record state of word beforehand
-            let before = this.hb.span(this.toString());
-
-            // Find the nun
-            for (let i = 1; i < this.letts.length - 1; i++) {
-                if (this.letts[i] == "נ" && this.letts[i + 1] == SHEVA) {
-                    // Get rid of it
-                    this.letts.splice(i, 2);
-
-                    // Put the dagesh in
-                    this.letts.splice(i + 1, 0, DAGESH);
-
-                    break;
-                }
-            }
-
-            this.addStep(
-                "I Nun",
-                before,
-                this.hb.span(this.toString()),
-                "This root is a I Nun root; in the imperfect paradigm, the "
-                + "nun is assimilated into the next consonant as a strong dagesh.",
-            );
-        }
-
-        return this;
-    }
-
-    applyLQCH() {
-        if (this.root.join("") == "לקח" && !this.perfect) {
-            // Record state of word beforehand
-            let before = this.hb.span(this.toString());
-
-            // Find the nun
-            for (let i = 0; i < this.letts.length - 1; i++) {
-                if (this.letts[i] == "ל" && this.letts[i + 1] == SHEVA) {
-                    // Get rid of it
-                    this.letts.splice(i, 2);
-
-                    // Put the dagesh in
-                    this.letts.splice(i + 1, 0, DAGESH);
-
-                    break;
-                }
-            }
-
-            this.addStep(
-                "Irregular root: לקח",
-                before,
-                this.hb.span(this.toString()),
-                "This root is irregular; in the imperfect paradigm, the "
-                + "lamed is assimilated into the next consonant as a strong dagesh.",
-            );
-        }
 
         return this;
     }
@@ -795,7 +759,7 @@ export class Verb {
             "Nun assimilation",
             before,
             this.hb.span(this.toString()),
-            "This word has a double nun, which is spelled with a dagesh.",
+            "This word has a double nun, which is spelled with a strong dagesh.",
         );
 
         return this;
