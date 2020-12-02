@@ -100,7 +100,8 @@ export class Hebrew {
         let weaknesses = [];
         weaknesses.length = 4;
 
-        weaknesses[IRREGULAR] = this.vocabulary[rootStr].irregular;
+        if (this.vocabulary[rootStr])
+            weaknesses[IRREGULAR] = this.vocabulary[rootStr].irregular;
 
         let root = this.lettersOf(rootStr);
 
