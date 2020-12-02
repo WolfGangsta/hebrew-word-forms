@@ -513,66 +513,69 @@ export class Verb {
                 + " into a sheva"
             );
             this.letts[1] = SHEVA;
+        }
 
-            // Check for I Guttural, I Alef
-            if (
+        // Check for I Guttural, I Alef
+        if (
+            this.letts[1] == SHEVA
+            && (
                 this.weaknesses[I] == "Guttural"
                 || this.weaknesses[I] == "Alef"
-            ) {
-                let desc, lesson;
+            )
+        ) {
+            let desc, lesson;
 
-                if (this.perfect) {
+            if (this.perfect) {
+                desc =
+                    "Gutturals such as "
+                    + this.l.name(this.root[0])
+                    + " attract a-class vowels, "
+                    + "so it has a chatef-patach instead of a sheva.";
+                lesson = "14.5";
+                this.letts[1] = CHATEF_PATACH;
+            } else {
+                lesson = "14.6";
+                if (this.singular && this.person == 1) {
                     desc =
-                        "Gutturals such as "
+                        "Ordinarily, gutturals such as "
                         + this.l.name(this.root[0])
                         + " attract a-class vowels, "
-                        + "so it has a chatef-patach instead of a sheva.";
-                    lesson = "14.5";
-                    this.letts[1] = CHATEF_PATACH;
+                        + "but in this case the alef's segol wins out, "
+                        + "so we change the sheva to a chatef-segol.";
+                    // prefix = prefix[0] + SEGOL;
+                    this.letts[1] = CHATEF_SEGOL;
                 } else {
-                    lesson = "14.6";
-                    if (this.singular && this.person == 1) {
+                    if (this.letts[3] == SHEVA) {
+                        let name = this.l.name(this.root[0]);
                         desc =
-                            "Ordinarily, gutturals such as "
+                            "Gutturals such as "
+                            + name
+                            + " attract a-class vowels. "
+                            + "The next vowel is a sheva, "
+                            + "which is a sure sign the "
+                            + name
+                            + " has a patach, "
+                            + "not a chatef-patach.";
+                        this.letts[1] = PATACH;
+                    } else {
+                        desc = 
+                            "Gutturals such as "
                             + this.l.name(this.root[0])
                             + " attract a-class vowels, "
-                            + "but in this case the alef's segol wins out, "
-                            + "so we change the sheva to a chatef-segol.";
-                        // prefix = prefix[0] + SEGOL;
-                        this.letts[1] = CHATEF_SEGOL;
-                    } else {
-                        if (this.letts[3] == SHEVA) {
-                            let name = this.l.name(this.root[0]);
-                            desc =
-                                "Gutturals such as "
-                                + name
-                                + " attract a-class vowels. "
-                                + "The next vowel is a sheva, "
-                                + "which is a sure sign the "
-                                + name
-                                + " has a patach, "
-                                + "not a chatef-patach.";
-                            this.letts[1] = PATACH;
-                        } else {
-                            desc = 
-                                "Gutturals such as "
-                                + this.l.name(this.root[0])
-                                + " attract a-class vowels, "
-                                + "so we change the sheva to a chatef-patach.";
-                            this.letts[1] = CHATEF_PATACH;
-                        }
-                        desc +=
-                            " The chireq in the prefix also changes to a patach to match.";
-                        prefix = prefix[0] + PATACH;
+                            + "so we change the sheva to a chatef-patach.";
+                        this.letts[1] = CHATEF_PATACH;
                     }
+                    desc +=
+                        " The chireq in the prefix also changes to a patach to match.";
+                    prefix = prefix[0] + PATACH;
                 }
-
-                rules.push([
-                    "I Guttural",
-                    desc,
-                    lesson
-                ]);
             }
+
+            rules.push([
+                "I Guttural",
+                desc,
+                lesson
+            ]);
         }
 
         if (prefix || suffix) description += ".";
