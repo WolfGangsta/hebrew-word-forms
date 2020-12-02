@@ -105,14 +105,13 @@ function showWord(root) {
         let word = new Verb(hebrew, root);
         if (!perf && (
             ["Yod", "Alef"].includes(word.weaknesses[I])
+            || word.rootStr == "הלכ"
         )) {
             let tr = document.createElement("tr");
             let td = document.createElement("td");
             td.colSpan = 2;
             td.innerText =
-                "Sorry! I "
-                + word.weaknesses[I]
-                + " roots aren't supported in the imperfect.";
+                "Sorry! This root isn't supported in the imperfect.";
             tr.append(td);
             tbody.appendChild(tr);
         } else {
