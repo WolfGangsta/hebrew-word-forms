@@ -397,7 +397,14 @@ export class Verb {
             description += "sheva and the theme vowel.";
 
             let weakness, rule, lesson;
-            if (themeVowel == PATACH) {
+            if (this.hb.vocabulary[this.rootStr].themeVowel) {
+                // TODO reference actual lessons
+                weakness = "Irregular";
+                rule =
+                    "This root's theme vowel is "
+                    + this.l.name(themeVowel)
+                    + ".";
+            } else if (themeVowel == PATACH) {
                 if (this.weaknesses[II] == "Guttural") {
                     if (this.weaknesses[III] == "Guttural") {
                         weakness = "II/III Guttural";
