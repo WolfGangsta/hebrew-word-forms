@@ -292,13 +292,6 @@ export class Verb {
         // Add prefix and suffix
         this.addAffixes();
 
-        // Assimilate Nuns
-        this.assimilateNun();
-
-        // Assimilate double letters
-        // TODO!!
-        // this.assimilateDoubles();
-
         // TODO: find why this happens; see if it happens with other letters
         if (this.letts.slice(-1) == "כ") {
             this.letts.push(SHEVA);
@@ -507,69 +500,70 @@ export class Verb {
                 + " into a sheva"
             );
             this.letts[1] = SHEVA;
+
+            // Check for I Guttural, I Alef
+            if (
+                this.weaknesses[I] == "Guttural"
+                || this.weaknesses[I] == "Alef"
+            ) {
+                let desc, lesson;
+
+                if (this.perfect) {
+                    desc =
+                        "Gutturals such as "
+                        + this.l.name(this.root[0])
+                        + " attract a-class vowels, "
+                        + "so it has a chatef-patach instead of a sheva.";
+                    lesson = "14.5";
+                    this.letts[1] = CHATEF_PATACH;
+                } else {
+                    lesson = "14.6";
+                    if (this.singular && this.person == 1) {
+                        desc =
+                            "Ordinarily, gutturals such as "
+                            + this.l.name(this.root[0])
+                            + " attract a-class vowels, "
+                            + "but in this case the alef's segol wins out, "
+                            + "so we change the sheva to a chatef-segol.";
+                        // prefix = prefix[0] + SEGOL;
+                        this.letts[1] = CHATEF_SEGOL;
+                    } else {
+                        if (this.letts[3] == SHEVA) {
+                            let name = this.l.name(this.root[0]);
+                            desc =
+                                "Gutturals such as "
+                                + name
+                                + " attract a-class vowels. "
+                                + "The next vowel is a sheva, "
+                                + "which is a sure sign the "
+                                + name
+                                + " has a patach, "
+                                + "not a chatef-patach.";
+                            this.letts[1] = PATACH;
+                        } else {
+                            desc = 
+                                "Gutturals such as "
+                                + this.l.name(this.root[0])
+                                + " attract a-class vowels, "
+                                + "so we change the sheva to a chatef-patach.";
+                            this.letts[1] = CHATEF_PATACH;
+                        }
+                        desc +=
+                            " The chireq in the prefix also changes to a patach to match.";
+                        prefix = prefix[0] + PATACH;
+                    }
+                }
+
+                rules.push([
+                    "I Guttural",
+                    desc,
+                    lesson
+                ]);
+            }
         }
 
         if (prefix || suffix) description += ".";
-        rules.push(description);
-
-        // I Guttural
-        if (this.weaknesses[I] == "Guttural"
-            && this.letts[1] == SHEVA)
-        {
-            let desc, lesson;
-
-            if (this.perfect) {
-                desc =
-                    "Gutturals such as "
-                    + this.l.name(this.root[0])
-                    + " attract a-class vowels, "
-                    + "so it has a chatef-patach instead of a sheva.";
-                lesson = "14.5";
-                this.letts[1] = CHATEF_PATACH;
-            } else {
-                lesson = "14.6";
-                if (this.singular && this.person == 1) {
-                    desc =
-                        "Ordinarily, gutturals such as "
-                        + this.l.name(this.root[0])
-                        + " attract a-class vowels, "
-                        + "but in this case the alef's segol wins out, "
-                        + "so we change the sheva to a chatef-segol.";
-                    // prefix = prefix[0] + SEGOL;
-                    this.letts[1] = CHATEF_SEGOL;
-                } else {
-                    if (this.letts[3] == SHEVA) {
-                        let name = this.l.name(this.root[0]);
-                        desc =
-                            "Gutturals such as "
-                            + name
-                            + " attract a-class vowels. "
-                            + "The next vowel is a sheva, "
-                            + "which is a sure sign the "
-                            + name
-                            + " has a patach, "
-                            + "not a chatef-patach.";
-                        this.letts[1] = PATACH;
-                    } else {
-                        desc = 
-                            "Gutturals such as "
-                            + this.l.name(this.root[0])
-                            + " attract a-class vowels, "
-                            + "so we change the sheva to a chatef-patach.";
-                        this.letts[1] = CHATEF_PATACH;
-                    }
-                    desc +=
-                        " The chireq in the prefix also changes to a patach.";
-                    prefix = prefix[0] + PATACH;
-                }
-            }
-
-            rules.push([
-                "I Guttural",
-                desc,
-                lesson
-            ]);
-        }
+        rules.unshift(description);
 
         // III Hey
         if (this.weaknesses[III] == "Hey") {
@@ -727,6 +721,37 @@ export class Verb {
             }
         }
 
+        // add weak dagesh to II Begadkefat
+        if (!this.perfect
+            && this.letts[1] == SHEVA
+            && this.l.isBegadkefat(this.root[1]))
+        {
+            rules.push([
+                "II Begadkefat",
+                "Because the second letter is a begadkefat, "
+                + "it receives a weak dagesh when it follows a closed syllable "
+                + "(indicated by the silent sheva just before).",
+                "See Ch. 3",
+            ])
+            this.letts.splice(3, 0, DAGESH);
+        }
+
+        // add weak dagesh to III Begadkefat
+        if (this.letts[3] == SHEVA
+            && this.letts[1] != SHEVA
+            && this.l.isShort(this.letts[1])
+            && this.l.isBegadkefat(this.root[2]))
+        {
+            rules.push([
+                "III Begadkefat",
+                "Because the third letter is a begadkefat, "
+                + "it receives a weak dagesh when it follows a closed syllable "
+                + "(indicated by the silent sheva just before).",
+                "See Ch. 3",
+            ])
+            this.letts.splice(5, 0, DAGESH);
+        }
+
         this.str = prefix + this.str + suffix;
 
         this.addStep(
@@ -775,79 +800,72 @@ export class Verb {
     finalize() {
         // Record state of word beforehand
         let before = this.hb.span(this.toString());
-        let description = [];
+        let rules = [];
 
-        // Add weak dageshes where applicable
-        let changed = false;
-        /* for (let i = 0; i < this.letts.length; i++) {
-            if (this.l.isBegadkefat(this.letts[i])
-                && this.letts[i + 1] != DAGESH)
-            {
-                // If this isn't the first letter, we need to make sure
-                // the letter comes after a closed syllable.
-                if (i > 0) {
-                    let offset = 1;
-                    let lastLetter = this.letts[i - 1];
-
-                    // If there is a silent alef, look back one more letter
-                    if (i > 1 && lastLetter == "א") {
-                        offset = 2;
-                        lastLetter = this.letts[i - 2];
-                    }
-
-                    // If this is a vocal vowel, there is no need to add a dagesh.
-                    if (lastLetter == SHEVA) {
-                        // For sheva, check whether it is silent or vocal
-
-                        // Position of sheva
-                        let j = i - offset;
-
-                        if (j > 1) {
-                            let lastLastLetter = this.letts[j - 2];
-
-                            // If there is a silent alef, look back one more letter
-                            if (j > 2 && lastLastLetter == "א") {
-                                lastLastLetter = this.letts[j - 3];
-                            }
-
-                            // Short and silent
-                            if (!this.l.isVowel(lastLastLetter)
-                                || !this.l.isShort(lastLastLetter))
-                            {
-                                // It's vocal. No dagesh.
-                                continue;
-                            }
-                        } else {
-                            // It's vocal. No dagesh.
-                            continue;
-                        }
+        // Assimilate III Nuns and spell double Nuns and Tavs with dageshes
+        for (let i = 2; i < this.letts.length - 2; i++) {
+            if (
+                this.letts[i] == "נ"
+                && this.letts[i + 1] == SHEVA
+            ) {
+                if (this.l.isConsonant(this.letts[i + 2])) {
+                    this.letts.splice(i, 2);
+                    if (this.letts[i] == "נ") {
+                        rules.push([
+                            "Strong Dagesh",
+                            "The nun from the root and the nun from the suffix "
+                            + "are spelled together with a strong dagesh.",
+                            "see 3.7",
+                        ])
+                        this.letts.splice(i + 1, 0, DAGESH);
                     } else {
-                        // Non-sheva vowels are vocal. No dagesh.
-                        if (this.l.isVowel(lastLetter))
-                            continue;
+                        let desc = "The nun from the root assimilates into the "
+                            + this.l.name(this.letts[i])
+                            + " from the suffix"
+                        if (this.letts[i + 1] == DAGESH) {
+                            desc += ", replacing the weak dagesh with a strong one.";
+                        } else {
+                            desc += ", becoming a strong dagesh.";
+                            this.letts.splice(i + 1, 0, DAGESH);
+                        }
+                        rules.push([
+                            "Nun Assimilation",
+                            desc,
+                            "box under 17.3",
+                        ]);
                     }
                 }
-
-                // Add a weak dagesh
-                this.letts.splice(i + 1, 0, DAGESH);
-                changed = true;
-                i++;
+            } else if (
+                this.letts[i] == "ת"
+                && this.letts[i + 1] == SHEVA
+                && this.letts[i + 2] == "ת"
+            ) {
+                rules.push([
+                    "Strong Dagesh",
+                    "The tav from the root and the tav from the suffix "
+                    + "are spelled together, "
+                    + "replacing the weak dagesh with a strong one.",
+                    "box under 17.3",
+                ])
+                this.letts.splice(i, 2);
             }
-        } */
+        }
+
         if (this.l.isBegadkefat(this.letts[0])
             && !this.letts[1] != DAGESH) {
             this.letts.splice(1, 0, DAGESH);
-            changed = true;
+            // changed = true;
+            rules.push([
+                "Begadkefat",
+                "We add a weak dagesh to the first letter, since it is a Begadkefat.",
+            ]);
         }
-        if (changed) description.push(
-            "add a weak dagesh to the first letter, since it is a Begadkefat."
-        );
 
-        if (description.length > 0 ) this.addStep(
+        if (rules.length > 0 ) this.addStep(
             "Last steps",
             before,
             this.hb.span(this.toString()),
-            "Finally, we " + description.join(" and ") + ".",
+            ...rules
         );
 
         return this;
