@@ -269,8 +269,7 @@ export class Verb {
     conjugate(perf, pers, sing, masc) {
 
         // Don't try to conjugate unknown weaknesses
-        if (this.weaknesses[II] == "Guttural"
-            || this.weaknesses[HOLLOW]
+        if (this.weaknesses[HOLLOW]
             || this.weaknesses[GEMINATE]
             || (!this.perfect
                 && (this.weaknesses[I] == "Yod"
@@ -402,10 +401,10 @@ export class Verb {
                 if (this.weaknesses[II] == "Guttural") {
                     if (this.weaknesses[III] == "Guttural") {
                         weakness = "II/III Guttural";
-                        lesson = "11.4, ???"; // TODO: Find ???
+                        lesson = "11.4, see Guttural Characteristic #2, p. 45";
                     } else {
                         weakness = "II Guttural";
-                        lesson = "???"; // TODO: Find ???
+                        lesson = "see Guttural Characteristic #2, p. 45";
                     }
                 } else {
                     weakness = "III Guttural";
@@ -418,7 +417,7 @@ export class Verb {
                 lesson = "see 15.7";
             } else if (themeVowel == QAMETS) {
                 weakness = "III Alef";
-                rule = "The theme vowel, like a III Guttural, is \"a\"-class, "
+                rule = "The theme vowel, like any III Guttural, is \"a\"-class, "
                     + "but it is a qamets instead of a patach "
                     + "due to compensatory lengthening.";
                 lesson = "14.9";
@@ -489,6 +488,20 @@ export class Verb {
                     + " into a sheva"
                 );
                 this.letts[3] = SHEVA;
+
+                // Check for II Guttural
+                if (this.weaknesses[II] == "Guttural") {
+                    this.letts[3] = CHATEF_PATACH;
+    
+                    rules.push([
+                        "II Guttural",
+                        "Gutturals such as "
+                        + this.l.name(this.root[1])
+                        + " attract a-class vowels, "
+                        + "so it has a chatef-patach instead of a sheva.",
+                        "Guttural Characteristics #2 & #3, p. 45",
+                    ]);
+                }
             }
         } else if ([
             "ְתֶמ",
