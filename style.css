@@ -18,7 +18,6 @@ body {
 }
 
 #explanation {
-    /* TODO: Make this a pop-up dialog*/
     position: absolute;
     display: none;
 }
