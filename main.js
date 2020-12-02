@@ -39,16 +39,18 @@ let lessonDiv = document.getElementById("lessonDiv");
 
 let rootSelect = document.getElementById("root");
 let rootInfo = document.getElementById("rootInfo");
+let perfTab = document.getElementById("perfect");
+let impfTab = document.getElementById("imperfect");
 rootSelect.addEventListener("input", function() {
     let root = this.selectedOptions[0].innerText;
     if (root != "") {
         let weaknesses = hebrew.makeReadable(hebrew.weaknesses(root));
         rootInfo.innerText = weaknesses.join(", ");
         showWord(root);
+        perfTab.style = "display: inline";
+        impfTab.style = "display: inline";
     }
 });
-let perfTab = document.getElementById("perfect");
-let impfTab = document.getElementById("imperfect");
 
 let testDiv = document.getElementById("testDiv");
 testDiv.style.display = "none";
