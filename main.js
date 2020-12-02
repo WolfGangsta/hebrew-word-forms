@@ -57,6 +57,7 @@ testDiv.style.display = "none";
 let questionDiv = document.getElementById("questionDiv");
 let answerDiv = document.getElementById("answerDiv");
 let testForm = document.getElementById("testForm");
+let newQuestionButton = document.getElementById("newQuestionButton");
 
 let vocabDiv = document.getElementById("vocabDiv");
 vocabDiv.style.display = "none";
@@ -176,6 +177,7 @@ function main() {
     // Initiate test
     let test = new Test(hebrew, wordList, testForm, questionDiv, answerDiv, feedbackDiv);
     test.newQuestion();
+    newQuestionButton.addEventListener("click", () => { test.newQuestion(); })
 
     // Populate word list
     for (let root of hebrew.wordList) {

@@ -169,9 +169,11 @@ export class Test {
     }
 
     showQuestion() {
-        while (this.questionDiv.length > 0) {
-            this.questionDiv.remove(this.questionDiv.children[0]);
-        }
+        this.submitButton.disabled = false;
+
+        this.questionDiv.innerHTML = "";
+        this.feedbackDiv.innerHTML = "";
+        this.answerDiv.innerHTML = "";
 
         let g;
         if (this.person == 1
@@ -195,6 +197,34 @@ export class Test {
             this.person.toString(), g, n,
             " form?",
         );
+
+        let i = 0;
+        for (let opt of this.options) {
+            let div = document.createElement("div");
+
+            let input = document.createElement("input");
+            input.type = "radio";
+            input.name = "quiz";
+            input.id = [
+                "correct", "0",
+                "1", "01"
+            ][i];
+            input.value = input.id;
+
+            let label = document.createElement("label");
+            label["for"] = input.id;
+            label.append(input, this.hb.span(opt));
+
+            div.append(label);
+
+            if (Math.random() < 0.5) {
+                this.answerDiv.append(div);
+            } else {
+                this.answerDiv.prepend(div);
+            }
+
+            i++;
+        }
     }
 
     checkAnswer() {
@@ -294,47 +324,5 @@ export class Test {
             default:
                 return "There's a mistake I don't know how to describe."
         }
-    }
-
-    /**
-     * @param {Array} options
-     */
-    set options(opts) {
-        for (let input of document.getElementsByName("quiz")) {
-            this.answerDiv.remove(input);
-        }
-
-        let i = 0;
-        for (let opt of opts) {
-            let div = document.createElement("div");
-
-            let input = document.createElement("input");
-            input.type = "radio";
-            input.name = "quiz";
-            input.id = [
-                "correct", "0",
-                "1", "01"
-            ][i];
-            input.value = input.id;
-
-            let label = document.createElement("label");
-            label["for"] = input.id;
-            label.append(input, this.hb.span(opt));
-
-            div.append(label);
-
-            if (Math.random() < 0.5) {
-                this.answerDiv.append(div);
-            } else {
-                this.answerDiv.prepend(div);
-            }
-
-            i++;
-        }
-
-        this.opts = opts;
-    }
-    get options() {
-        return this.opts;
     }
 }
